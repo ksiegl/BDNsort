@@ -3030,6 +3030,7 @@ int ReadADC2(int **p,int n_trig, int *event_good,int *n_bad_events) {
 }
 
 int ReadTDC1(int **p, int n_trig, int *event_good, int *n_bad_events){
+	int x, tdc_ch;
 	(*p)++;
 	if(**p != 0x2dc12dc1) {
 		cout << "trig #" << n_trig << ", TDC1 marker not found where expected!" << endl;
@@ -3093,6 +3094,7 @@ int ReadTDC1(int **p, int n_trig, int *event_good, int *n_bad_events){
 }
 
 int ReadTDC2(int **p, int n_trig, int *event_good, int *n_bad_events){
+	int x, tdc_ch;
 	if(**p != 0x2dc22dc2) {
 		cout << "trig #" << n_trig << ", TDC2 marker not found where expected!" << endl;
 		(*event_good) = 0;
