@@ -208,10 +208,10 @@ int countbit(int x);
 int time_in_seconds(int, int, int, int);
 Double_t tofToMCPGrid (BDNCase_t, char, Double_t);
 int tofCounting();
-int ReadADC1(int*, int, int*, int*);
-int ReadADC2(int*, int, int*, int*);
-int ReadTDC1(int*);
-int ReadTDC2(int*);
+int ReadADC1(int**, int, int*, int*);
+int ReadADC2(int**, int, int*, int*);
+int ReadTDC1(int**, int, int*, int*);
+int ReadTDC2(int**, int, int*, int*);
 
 using namespace std;
 using namespace TMath;
