@@ -2975,38 +2975,34 @@ int ReadADC2(int **p,int n_trig, int *event_good,int *n_bad_events) {
 		case 1:
 			y = x + randgen->Rndm();
 			bdn.a_T_ge_highE = x;
-			bdn.e_T_ge_highE = T_ge_highE_coeff[0] + y*T_ge_highE_coeff[1] + y*y*T_ge_highE_coeff[2];
-			ha_T_ge_highE->Fill(bdn.a_T_ge_highE);
+			ha_T_ge_highE->Fill(T_ge_highE_coeff[0] + y*T_ge_highE_coeff[1] + y*y*T_ge_highE_coeff[2]);
 			//he_T_ge_highE->Fill(e_T_ge_highE);
 			//he_ge_highE	 ->Fill(e_T_ge_highE);
-			metadata.n_adc_T_ge_highE++;
+			metadata.n_adc_hits_T_ge_highE++;
 		break;
 		case 2: 
 			y = x + randgen->Rndm();
 			bdn.a_R_ge_highE = x;
-			bdn.e_R_ge_highE = R_ge_highE_coeff[0] + y*R_ge_highE_coeff[1] + y*y*R_ge_highE_coeff[2];
-			ha_R_ge_highE->Fill(bdn.a_R_ge_highE);
+			ha_R_ge_highE->Fill(R_ge_highE_coeff[0] + y*R_ge_highE_coeff[1] + y*y*R_ge_highE_coeff[2]bdn.a_R_ge_highE);
 			//he_T_ge_highE->Fill(e_T_ge_highE);
 			//he_ge_highE	 ->Fill(e_T_ge_highE);
-			metadata.n_adc_R_ge_highE++;
+			metadata.n_adc_hits_R_ge_highE++;
 		break;
 		case 7:
 			y = x + randgen->Rndm();
 			bdn.a_T_ge = x;
-			bdn.e_T_ge = T_ge_coeff[0] + y*T_ge_coeff[1] + y*y*T_ge_coeff[2];
-			ha_T_ge->Fill(bdn.a_T_ge);
+			ha_T_ge->Fill(T_ge_coeff[0] + y*T_ge_coeff[1] + y*y*T_ge_coeff[2]);
 			//he_T_ge_highE->Fill(e_T_ge_highE);
 			//he_ge_highE	 ->Fill(e_T_ge_highE);
-			metadata.n_adc_T_ge++;
+			metadata.n_adc_hits_T_ge++;
 		break;
 		case 8:
 			y = x + randgen->Rndm();
 			bdn.a_R_ge = x;
-			bdn.e_R_ge = R_ge_coeff[0] + y*R_ge_coeff[1] + y*y*R_ge_coeff[2];
-			ha_R_ge->Fill(bdn.a_R_ge);
+			ha_R_ge->Fill(R_ge_coeff[0] + y*R_ge_coeff[1] + y*y*R_ge_coeff[2]);
 			//he_T_ge_highE->Fill(e_T_ge_highE);
 			//he_ge_highE	 ->Fill(e_T_ge_highE);
-			metadata.n_adc_R_ge++;
+			metadata.n_adc_hits_R_ge++;
 		break;
 		//if (adc_ch == 9) {
 		//	a_T_ge = x;
@@ -3016,11 +3012,10 @@ int ReadADC2(int **p,int n_trig, int *event_good,int *n_bad_events) {
 		case 9:
 			y = x + randgen->Rndm();
 			bdn.a_T_ge = x;
-			bdn.e_T_ge = T_ge_coeff[0] + y*T_ge_coeff[1] + y*y*T_ge_coeff[2];
-			ha_T_ge->Fill(bdn.a_T_ge);
+			ha_T_ge->Fill(T_ge_coeff[0] + y*T_ge_coeff[1] + y*y*T_ge_coeff[2]);
 			//he_T_ge_highE->Fill(e_T_ge_highE);
 			//he_ge_highE	 ->Fill(e_T_ge_highE);
-			metadata.n_adc_T_ge++;
+			metadata.n_adc_hits_T_ge++;
 		break;
 		default:
 		break;
@@ -3036,13 +3031,12 @@ int ReadTDC1(int **p, int n_trig, int *event_good, int *n_bad_events){
 		cout << "trig #" << n_trig << ", TDC1 marker not found where expected!" << endl;
 		(*event_good) = 0;
 		(*n_bad_events)++;
-		break;
 	}
 	(*p)++;
 	while(**p != 0x2dc22dc2) {
 		tdc_ch=**p;
 		(*p)++;
-		x = int(*p & 0x00ffffff); // take only the 24-bit data word
+		x = int(**p & 0x00ffffff); // take only the 24-bit data word
 		if (x & 0x0080000) x -= 0x00ffffff; // test for neg value
 			// if neg then you need to shift because the leading 1 in 24-bit
 			// is not leading in 32-bit; the shift is by "-0x00ffffff"
@@ -3105,7 +3099,7 @@ int ReadTDC2(int **p, int n_trig, int *event_good, int *n_bad_events){
 	while(**p != 0x100cca1e) {
 		tdc_ch=**p;
 		(*p)++;
-		x = int(*p & 0x00ffffff); // take only the 24-bit data word
+		x = int(**p & 0x00ffffff); // take only the 24-bit data word
 		if (x & 0x0080000) x -= 0x00ffffff; // test for neg value
 			// if neg then you need to shift because the leading 1 in 24-bit
 			// is not leading in 32-bit; the shift is by "-0x00ffffff"
