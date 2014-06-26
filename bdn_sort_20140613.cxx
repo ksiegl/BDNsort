@@ -216,6 +216,7 @@ int ReadTDC2(int*);
 using namespace std;
 using namespace TMath;
 //using std::vector;
+TRandom3 *randgen;
 
 int main(int argc, char *argv[]) {
 	
@@ -363,7 +364,7 @@ int main(int argc, char *argv[]) {
 	long tot_trigs = 0;
 	
 	// Energy values (new 2013-12-01)
-	TRandom3 *randgen = new TRandom3(1);
+	*randgen = new TRandom3(1);
 	Double_t y, e_B_E, e_L_E, e_R_ge, e_R_ge_highE, e_T_ge, e_T_ge_highE;
 	
 	// Event counts for ADC (na_), TDC (nt_):
@@ -2812,17 +2813,17 @@ int countbit(int x) {
 int ReadADC1(int *p,int n_trig, int *event_good,int *n_bad_events) {
 // ADC1 *******************************
 	int x, adc_ch, wordc;
-	if ((*(*p)) != 0xadc1adc1) {
+	if (int(*(*p)) != 0xadc1adc1) {
 		cout << "trig #" << n_trig << ", ADC1 marker not found where expected!" << endl;
 		(*event_good) = 0;
 		(*n_bad_events)++;
 		return -1;
 	}
 	(*p)++; // move to ADC1 hit register
-	x = int((*(*p)) & 0xffff ); // hit register, tells which channels were hit
+	x = int(int(*(*p)) & 0xffff ); // hit register, tells which channels were hit
 	wordc = countbit(x);
 	
-	for (j=1; j<=wordc; j++) { // Loop over all ADC channels which have hits
+	for (int j=1; j<=wordc; j++) { // Loop over all ADC channels which have hits
 		(*p)++;  // Increment pointer p to ADC channel with a hit
 		x = int((*(*p)) & 0x0fff);
 	
@@ -2839,46 +2840,46 @@ int ReadADC1(int *p,int n_trig, int *event_good,int *n_bad_events) {
 			bdn.a_T_mcpE = x;
 			ha_T_mcpE->Fill(x);
 			ha_T_mcpE_corr->Fill(x - ped_T_mcpE + randgen->Rndm());
-			metafile.na_T_mcpE++;
+			metadata.na_T_mcpE++;
 		break;
 		case 2: 
 			bdn.a_B_dEa = x;
 			ha_B_dEa->Fill(x);
-			metafile.na_B_dEa++;
+			metadata.na_B_dEa++;
 		break;
 		case 3:
 			bdn.a_B_dEb = x;
 			ha_B_dEb->Fill(x);
-			metafile.na_B_dEb++;
+			metadata.na_B_dEb++;
 		break;
 		case 4: 
 			bdn.a_B_E = x;
 			ha_B_E->Fill(x);
-			metafile.na_B_E++;
+			metadata.na_B_E++;
 		break;
 		case 5:
 			bdn.a_T_mcpA = x;
 			ha_T_mcpA->Fill(x);
 			ha_T_mcpA_corr->Fill(x - ped_T_mcpA + randgen->Rndm());
-			metafile.na_T_mcpA++;
+			metadata.na_T_mcpA++;
 		break;
 		case 6:
 			bdn.a_T_mcpB = x;
 			ha_T_mcpB->Fill(x);
 			ha_T_mcpB_corr->Fill(x - ped_T_mcpB + randgen->Rndm());
-			metafile.na_T_mcpB++;
+			metadata.na_T_mcpB++;
 		break;
 		case 7:
 			bdn.a_T_mcpC = x;
 			ha_T_mcpC->Fill(x);
 			ha_T_mcpC_corr->Fill(x - ped_T_mcpC + randgen->Rndm());
-			metafile.na_T_mcpC++;
+			metadata.na_T_mcpC++;
 		break;
 		case 8:
 			bdn.a_T_mcpD = x;
 			ha_T_mcpD->Fill(x);
 			ha_T_mcpD_corr->Fill(x - ped_T_mcpD + randgen->Rndm());
-			metafile.na_T_mcpD++;
+			metadata.na_T_mcpD++;
 		break;
 		//if (adc_ch == 9) {
 		//	a_T_ge = x;
@@ -2889,46 +2890,46 @@ int ReadADC1(int *p,int n_trig, int *event_good,int *n_bad_events) {
 			bdn.a_R_mcpE = x;
 			ha_R_mcpE->Fill(x);
 			ha_R_mcpE_corr->Fill(x - ped_R_mcpE + randgen->Rndm());
-			metafile.na_R_mcpE++;
+			metadata.na_R_mcpE++;
 		break;
 		case 10:
 			bdn.a_L_dEa = x;
 			ha_L_dEa->Fill(x);
-			metafile.na_L_dEa++;
+			metadata.na_L_dEa++;
 		break;
 		case 11:
 			bdn.a_L_dEb = x;
 			ha_L_dEb->Fill(x);
-			metafile.na_L_dEb++;
+			metadata.na_L_dEb++;
 		break;
 		case 12:
 			bdn.a_L_E = x;
 			ha_L_E->Fill(x);
-			metafile.na_L_E++;
+			metadata.na_L_E++;
 		break;
 		case 13:
 			bdn.a_R_mcpA = x;
 			ha_R_mcpA->Fill(x);
 			ha_R_mcpA_corr->Fill(x - ped_R_mcpA + randgen->Rndm());
-			metafile.na_R_mcpA++;
+			metadata.na_R_mcpA++;
 		break;
 		case 14:
 			bdn.a_R_mcpB = x;
 			ha_R_mcpB->Fill(x);
 			ha_R_mcpB_corr->Fill(x - ped_R_mcpB + randgen->Rndm());
-			metafile.na_R_mcpB++;
+			metadata.na_R_mcpB++;
 		break;
 		case 15:
 			bdn.a_R_mcpC = x;
 			ha_R_mcpC->Fill(x);
 			ha_R_mcpC_corr->Fill(x - ped_R_mcpC + randgen->Rndm());
-			metafile.na_R_mcpC++;
+			metadata.na_R_mcpC++;
 		break;
 		case 16:
 			bdn.a_R_mcpD = x;
 			ha_R_mcpD->Fill(x);
 			ha_R_mcpD_corr->Fill( x - ped_R_mcpD + randgen->Rndm());
-			metafile.na_R_mcpD++;
+			metadata.na_R_mcpD++;
 		break;
 		default:
 		}
