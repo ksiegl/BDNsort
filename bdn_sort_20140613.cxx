@@ -617,8 +617,9 @@ int main(int argc, char *argv[]) {
 				e0 = ScarletEvnt(h);
 				e1 = e0[1];
 				p = reinterpret_cast<int*>(e1.body());
-				
 			// ADC1 *******************************
+				ReadADC1(&p,n_triggers,&event_good,&n_bad_events);
+				/*
 				if (*p != 0xadc1adc1) {
 					cout << "trig #" << n_trig << ", ADC1 marker not found where expected!" << endl;
 					event_good = 0;
@@ -749,8 +750,10 @@ int main(int argc, char *argv[]) {
 					}
 					
 				} // for (wordc)
-				
+				*/
 			// ADC2 *******************************
+				ReadADC2(&p,n_triggers,&event_good,&n_bad_events);
+				/*
 				*p++; // move pointer to ADC2 marker
 				if (*p != 0xadc2adc2) {
 					cout << "trig #" << n_trig << ", ADC2 marker not found where expected!" << endl;
@@ -832,7 +835,7 @@ int main(int argc, char *argv[]) {
 						na_R_ge++;
 					}
 				} // for (wordc)
-				
+				*/
 				
 			// TDC1 *******************************
 				*p++; // move pointer to TDC1 marker
@@ -2930,6 +2933,90 @@ int ReadADC1(int **p,int n_trig, int *event_good,int *n_bad_events) {
 			ha_R_mcpD->Fill(x);
 			ha_R_mcpD_corr->Fill( x - ped_R_mcpD + randgen->Rndm());
 			metadata.n_adc_hits_R_mcpD++;
+		break;
+		default:
+		break;
+		}
+	} // for (wordc)
+	return 0;
+}
+
+
+int ReadADC2(int **p,int n_trig, int *event_good,int *n_bad_events) {
+// ADC1 *******************************
+	int x,y, adc_ch, wordc;
+	if (int(*(*p)) != 0xadc2adc2) {
+		cout << "trig #" << n_trig << ", ADC2 marker not found where expected!" << endl;
+		(*event_good) = 0;
+		(*n_bad_events)++;
+		return -1;
+	}
+	(*p)++; // move to ADC1 hit register
+	x = int(int(*(*p)) & 0xffff ); // hit register, tells which channels were hit
+	wordc = countbit(x);
+	
+	for (int j=1; j<=wordc; j++) { // Loop over all ADC channels which have hits
+		(*p)++;  // Increment pointer p to ADC channel with a hit
+		x = int((*(*p)) & 0x0fff);
+	
+		// Get ADC channel of that hit then associate it with the data:
+		adc_ch=int((*(*p)) & 0xf000);
+		adc_ch=(adc_ch>>12)+1;
+		//if (adc_ch == 1) {
+		//	a_R_ge = x;
+		//	ha_R_ge->Fill(x);
+		//	na_R_ge++;
+		//}
+		switch(adc_ch) {
+		case 1:
+			y = x + randgen->Rndm();
+			bdn.a_T_ge_highE = x;
+			bdn.e_T_ge_highE = T_ge_highE_coeff[0] + y*T_ge_highE_coeff[1] + y*y*T_ge_highE_coeff[2];
+			ha_T_ge_highE->Fill(bdn.a_T_ge_highE);
+			//he_T_ge_highE->Fill(e_T_ge_highE);
+			//he_ge_highE	 ->Fill(e_T_ge_highE);
+			metadata.n_adc_T_ge_highE++;
+		break;
+		case 2: 
+			y = x + randgen->Rndm();
+			bdn.a_R_ge_highE = x;
+			bdn.e_R_ge_highE = R_ge_highE_coeff[0] + y*R_ge_highE_coeff[1] + y*y*R_ge_highE_coeff[2];
+			ha_R_ge_highE->Fill(bdn.a_R_ge_highE);
+			//he_T_ge_highE->Fill(e_T_ge_highE);
+			//he_ge_highE	 ->Fill(e_T_ge_highE);
+			metadata.n_adc_R_ge_highE++;
+		break;
+		case 7:
+			y = x + randgen->Rndm();
+			bdn.a_T_ge = x;
+			bdn.e_T_ge = T_ge_coeff[0] + y*T_ge_coeff[1] + y*y*T_ge_coeff[2];
+			ha_T_ge->Fill(bdn.a_T_ge);
+			//he_T_ge_highE->Fill(e_T_ge_highE);
+			//he_ge_highE	 ->Fill(e_T_ge_highE);
+			metadata.n_adc_T_ge++;
+		break;
+		case 8:
+			y = x + randgen->Rndm();
+			bdn.a_R_ge = x;
+			bdn.e_R_ge = R_ge_coeff[0] + y*R_ge_coeff[1] + y*y*R_ge_coeff[2];
+			ha_R_ge->Fill(bdn.a_R_ge);
+			//he_T_ge_highE->Fill(e_T_ge_highE);
+			//he_ge_highE	 ->Fill(e_T_ge_highE);
+			metadata.n_adc_R_ge++;
+		break;
+		//if (adc_ch == 9) {
+		//	a_T_ge = x;
+		//	ha_T_ge->Fill(x);
+		//	na_T_ge++;
+		//}
+		case 9:
+			y = x + randgen->Rndm();
+			bdn.a_T_ge = x;
+			bdn.e_T_ge = T_ge_coeff[0] + y*T_ge_coeff[1] + y*y*T_ge_coeff[2];
+			ha_T_ge->Fill(bdn.a_T_ge);
+			//he_T_ge_highE->Fill(e_T_ge_highE);
+			//he_ge_highE	 ->Fill(e_T_ge_highE);
+			metadata.n_adc_T_ge++;
 		break;
 		default:
 		break;
