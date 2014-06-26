@@ -618,7 +618,7 @@ int main(int argc, char *argv[]) {
 				e1 = e0[1];
 				p = reinterpret_cast<int*>(e1.body());
 			// ADC1 *******************************
-				ReadADC1(&p,n_triggers,&event_good,&n_bad_events);
+				ReadADC1(&p,n_trig,&event_good,&n_bad_events);
 				/*
 				if (*p != 0xadc1adc1) {
 					cout << "trig #" << n_trig << ", ADC1 marker not found where expected!" << endl;
@@ -752,7 +752,7 @@ int main(int argc, char *argv[]) {
 				} // for (wordc)
 				*/
 			// ADC2 *******************************
-				ReadADC2(&p,n_triggers,&event_good,&n_bad_events);
+				ReadADC2(&p,n_trig,&event_good,&n_bad_events);
 				/*
 				*p++; // move pointer to ADC2 marker
 				if (*p != 0xadc2adc2) {
@@ -838,7 +838,7 @@ int main(int argc, char *argv[]) {
 				*/
 				
 			// TDC1 *******************************
-				ReadTDC1(&p,n_triggers,&event_good,&n_bad_events);
+				ReadTDC1(&p,n_trig,&event_good,&n_bad_events);
 				/*
 				*p++; // move pointer to TDC1 marker
 				if (*p != 0x2dc12dc1) {
@@ -898,7 +898,7 @@ int main(int argc, char *argv[]) {
 				} // while
 				*/
 			// TDC2 *******************************				
-				ReadTDC2(&p,n_triggers,&event_good,&n_bad_events);
+				ReadTDC2(&p,n_trig,&event_good,&n_bad_events);
 				/*
 				if (*p != 0x2dc22dc2) {
 					cout << "trig #" << n_trig << ", TDC2 marker not found where expected!" << endl;
@@ -2983,7 +2983,7 @@ int ReadADC2(int **p,int n_trig, int *event_good,int *n_bad_events) {
 		case 2: 
 			y = x + randgen->Rndm();
 			bdn.a_R_ge_highE = x;
-			ha_R_ge_highE->Fill(R_ge_highE_coeff[0] + y*R_ge_highE_coeff[1] + y*y*R_ge_highE_coeff[2]bdn.a_R_ge_highE);
+			ha_R_ge_highE->Fill(R_ge_highE_coeff[0] + y*R_ge_highE_coeff[1] + y*y*R_ge_highE_coeff[2]);
 			//he_T_ge_highE->Fill(e_T_ge_highE);
 			//he_ge_highE	 ->Fill(e_T_ge_highE);
 			metadata.n_adc_hits_R_ge_highE++;
@@ -3031,6 +3031,7 @@ int ReadTDC1(int **p, int n_trig, int *event_good, int *n_bad_events){
 		cout << "trig #" << n_trig << ", TDC1 marker not found where expected!" << endl;
 		(*event_good) = 0;
 		(*n_bad_events)++;
+		return -1;
 	}
 	(*p)++;
 	while(**p != 0x2dc22dc2) {
@@ -3093,7 +3094,7 @@ int ReadTDC2(int **p, int n_trig, int *event_good, int *n_bad_events){
 		cout << "trig #" << n_trig << ", TDC2 marker not found where expected!" << endl;
 		(*event_good) = 0;
 		(*n_bad_events)++;
-		break;
+		return -1;
 	}
 	(*p)++;
 	while(**p != 0x100cca1e) {
@@ -3107,11 +3108,6 @@ int ReadTDC2(int **p, int n_trig, int *event_good, int *n_bad_events){
 		case 1:
 			bdn.t_rf = x;
 			ht_rf->Fill(x);
-		break;
-		case 2:
-			bdn.t_T_ge = x;
-			ht_T_ge->Fill(x);
-			metadata.n_tdc_hits_T_ge++;
 		break;
 		case 2:
 			bdn.t_T_ge = x;
