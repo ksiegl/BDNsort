@@ -2810,7 +2810,7 @@ int countbit(int x) {
 	return n;
 }
 
-int ReadADC1(int *p,int n_trig, int *event_good,int *n_bad_events) {
+int ReadADC1(int **p,int n_trig, int *event_good,int *n_bad_events) {
 // ADC1 *******************************
 	int x, adc_ch, wordc;
 	if (int(*(*p)) != 0xadc1adc1) {
