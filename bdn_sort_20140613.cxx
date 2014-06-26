@@ -838,6 +838,8 @@ int main(int argc, char *argv[]) {
 				*/
 				
 			// TDC1 *******************************
+				ReadTDC1(&p,n_triggers,&event_good,&n_bad_events);
+				/*
 				*p++; // move pointer to TDC1 marker
 				if (*p != 0x2dc12dc1) {
 					cout << "trig #" << n_trig << ", TDC1 marker not found where expected!" << endl;
@@ -894,8 +896,10 @@ int main(int argc, char *argv[]) {
 						nt_L_E++;
 					}
 				} // while
-				
+				*/
 			// TDC2 *******************************				
+				ReadTDC2(&p,n_triggers,&event_good,&n_bad_events);
+				/*
 				if (*p != 0x2dc22dc2) {
 					cout << "trig #" << n_trig << ", TDC2 marker not found where expected!" << endl;
 					event_good = 0;
@@ -925,7 +929,7 @@ int main(int argc, char *argv[]) {
 						nt_R_ge++;
 					}
 				} // end while
-				
+				*/
 				if (n_run < 1201) { // old scaler readout
 				
 				// Capt Scaler ************************
@@ -3024,6 +3028,112 @@ int ReadADC2(int **p,int n_trig, int *event_good,int *n_bad_events) {
 	} // for (wordc)
 	return 0;
 }
+
+int ReadTDC1(int **p, int n_trig, int *event_good, int *n_bad_events){
+	(*p)++;
+	if(**p != 0x2dc12dc1) {
+		cout << "trig #" << n_trig << ", TDC1 marker not found where expected!" << endl;
+		(*event_good) = 0;
+		(*n_bad_events)++;
+		break;
+	}
+	(*p)++;
+	while(**p != 0x2dc22dc2) {
+		tdc_ch=**p;
+		(*p)++;
+		x = int(*p & 0x00ffffff); // take only the 24-bit data word
+		if (x & 0x0080000) x -= 0x00ffffff; // test for neg value
+			// if neg then you need to shift because the leading 1 in 24-bit
+			// is not leading in 32-bit; the shift is by "-0x00ffffff"
+		switch(tdc_ch) {
+		case 1:
+			bdn.t_T_mcp = x;
+			ht_T_mcp->Fill(x);
+			metadata.n_tdc_hits_T_mcp++;
+		break;
+		case 2:
+			bdn.t_R_mcp = x;
+			ht_R_mcp->Fill(x);
+			metadata.n_tdc_hits_R_mcp++;
+		break;
+		case 3:
+			bdn.t_B_dEa = x;
+			ht_B_dEa->Fill(x);
+			metadata.n_tdc_hits_B_dEa++;
+		break;
+		case 4:
+			bdn.t_B_dEb = x;
+			ht_B_dEb->Fill(x);
+			metadata.n_tdc_hits_B_dEb++;
+		break;
+		case 5:
+			bdn.t_B_E = x;
+			ht_B_E->Fill(x);
+			metadata.n_tdc_hits_B_E++;
+		break;
+		case 6:
+			bdn.t_L_dEa = x;
+			ht_L_dEa->Fill(x);
+			metadata.n_tdc_hits_L_dEa++;
+		break;
+		case 7:
+			bdn.t_L_dEb = x;
+			ht_L_dEb->Fill(x);
+			metadata.n_tdc_hits_L_dEb++;
+		break;
+		case 8:
+			bdn.t_L_E = x;
+			ht_L_E->Fill(x);
+			metadata.n_tdc_hits_L_E++;
+		break;
+		default:
+		break;
+		}
+	}
+}
+
+int ReadTDC2(int **p, int n_trig, int *event_good, int *n_bad_events){
+	if(**p != 0x2dc22dc2) {
+		cout << "trig #" << n_trig << ", TDC2 marker not found where expected!" << endl;
+		(*event_good) = 0;
+		(*n_bad_events)++;
+		break;
+	}
+	(*p)++;
+	while(**p != 0x100cca1e) {
+		tdc_ch=**p;
+		(*p)++;
+		x = int(*p & 0x00ffffff); // take only the 24-bit data word
+		if (x & 0x0080000) x -= 0x00ffffff; // test for neg value
+			// if neg then you need to shift because the leading 1 in 24-bit
+			// is not leading in 32-bit; the shift is by "-0x00ffffff"
+		switch(tdc_ch) {
+		case 1:
+			bdn.t_rf = x;
+			ht_rf->Fill(x);
+		break;
+		case 2:
+			bdn.t_T_ge = x;
+			ht_T_ge->Fill(x);
+			metadata.n_tdc_hits_T_ge++;
+		break;
+		case 2:
+			bdn.t_T_ge = x;
+			ht_T_ge->Fill(x);
+			metadata.n_tdc_hits_T_ge++;
+		break;
+		case 3:
+			bdn.t_R_ge = x;
+			ht_R_ge->Fill(x);
+			metadata.n_tdc_hits_R_ge++;
+		break;
+		default:
+		break;
+		}
+	}
+}
+
+
 /*
 // void sync_sort(const struct ScarletEvntHdr *e) {
 	
