@@ -216,7 +216,7 @@ int ReadTDC2(int*);
 using namespace std;
 using namespace TMath;
 //using std::vector;
-TRandom3 *randgen;
+TRandom3 *randgen = new TRandom3(1);
 
 int main(int argc, char *argv[]) {
 	
@@ -364,7 +364,7 @@ int main(int argc, char *argv[]) {
 	long tot_trigs = 0;
 	
 	// Energy values (new 2013-12-01)
-	*randgen = new TRandom3(1);
+	
 	Double_t y, e_B_E, e_L_E, e_R_ge, e_R_ge_highE, e_T_ge, e_T_ge_highE;
 	
 	// Event counts for ADC (na_), TDC (nt_):
@@ -2840,46 +2840,46 @@ int ReadADC1(int *p,int n_trig, int *event_good,int *n_bad_events) {
 			bdn.a_T_mcpE = x;
 			ha_T_mcpE->Fill(x);
 			ha_T_mcpE_corr->Fill(x - ped_T_mcpE + randgen->Rndm());
-			metadata.na_T_mcpE++;
+			metadata.n_adc_hits_T_mcpE++;
 		break;
 		case 2: 
 			bdn.a_B_dEa = x;
 			ha_B_dEa->Fill(x);
-			metadata.na_B_dEa++;
+			metadata.n_adc_hits_B_dEa++;
 		break;
 		case 3:
 			bdn.a_B_dEb = x;
 			ha_B_dEb->Fill(x);
-			metadata.na_B_dEb++;
+			metadata.n_adc_hits_B_dEb++;
 		break;
 		case 4: 
 			bdn.a_B_E = x;
 			ha_B_E->Fill(x);
-			metadata.na_B_E++;
+			metadata.n_adc_hits_B_E++;
 		break;
 		case 5:
 			bdn.a_T_mcpA = x;
 			ha_T_mcpA->Fill(x);
 			ha_T_mcpA_corr->Fill(x - ped_T_mcpA + randgen->Rndm());
-			metadata.na_T_mcpA++;
+			metadata.n_adc_hits_T_mcpA++;
 		break;
 		case 6:
 			bdn.a_T_mcpB = x;
 			ha_T_mcpB->Fill(x);
 			ha_T_mcpB_corr->Fill(x - ped_T_mcpB + randgen->Rndm());
-			metadata.na_T_mcpB++;
+			metadata.n_adc_hits_T_mcpB++;
 		break;
 		case 7:
 			bdn.a_T_mcpC = x;
 			ha_T_mcpC->Fill(x);
 			ha_T_mcpC_corr->Fill(x - ped_T_mcpC + randgen->Rndm());
-			metadata.na_T_mcpC++;
+			metadata.n_adc_hits_T_mcpC++;
 		break;
 		case 8:
 			bdn.a_T_mcpD = x;
 			ha_T_mcpD->Fill(x);
 			ha_T_mcpD_corr->Fill(x - ped_T_mcpD + randgen->Rndm());
-			metadata.na_T_mcpD++;
+			metadata.n_adc_hits_T_mcpD++;
 		break;
 		//if (adc_ch == 9) {
 		//	a_T_ge = x;
@@ -2890,48 +2890,49 @@ int ReadADC1(int *p,int n_trig, int *event_good,int *n_bad_events) {
 			bdn.a_R_mcpE = x;
 			ha_R_mcpE->Fill(x);
 			ha_R_mcpE_corr->Fill(x - ped_R_mcpE + randgen->Rndm());
-			metadata.na_R_mcpE++;
+			metadata.n_adc_hits_R_mcpE++;
 		break;
 		case 10:
 			bdn.a_L_dEa = x;
 			ha_L_dEa->Fill(x);
-			metadata.na_L_dEa++;
+			metadata.n_adc_hits_L_dEa++;
 		break;
 		case 11:
 			bdn.a_L_dEb = x;
 			ha_L_dEb->Fill(x);
-			metadata.na_L_dEb++;
+			metadata.n_adc_hits_L_dEb++;
 		break;
 		case 12:
 			bdn.a_L_E = x;
 			ha_L_E->Fill(x);
-			metadata.na_L_E++;
+			metadata.n_adc_hits_L_E++;
 		break;
 		case 13:
 			bdn.a_R_mcpA = x;
 			ha_R_mcpA->Fill(x);
 			ha_R_mcpA_corr->Fill(x - ped_R_mcpA + randgen->Rndm());
-			metadata.na_R_mcpA++;
+			metadata.n_adc_hits_R_mcpA++;
 		break;
 		case 14:
 			bdn.a_R_mcpB = x;
 			ha_R_mcpB->Fill(x);
 			ha_R_mcpB_corr->Fill(x - ped_R_mcpB + randgen->Rndm());
-			metadata.na_R_mcpB++;
+			metadata.n_adc_hits_R_mcpB++;
 		break;
 		case 15:
 			bdn.a_R_mcpC = x;
 			ha_R_mcpC->Fill(x);
 			ha_R_mcpC_corr->Fill(x - ped_R_mcpC + randgen->Rndm());
-			metadata.na_R_mcpC++;
+			metadata.n_adc_hits_R_mcpC++;
 		break;
 		case 16:
 			bdn.a_R_mcpD = x;
 			ha_R_mcpD->Fill(x);
 			ha_R_mcpD_corr->Fill( x - ped_R_mcpD + randgen->Rndm());
-			metadata.na_R_mcpD++;
+			metadata.n_adc_hits_R_mcpD++;
 		break;
 		default:
+		break;
 		}
 	} // for (wordc)
 	return 0;
