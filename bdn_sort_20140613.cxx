@@ -3132,7 +3132,7 @@ int ReadTDC2(int **p, int n_trig, int *event_good, int *n_bad_events){
 	}
 }
 
-int ReadScalers(int **p, int n_trig, int n_run,int *all_trigs,int *s_liveTime_us,int *s_runTime, int *event_good, int *n_bad_events){
+int ReadScalers(int **p, int n_trig, int n_run,int *all_trigs,int *s_liveTime_us,long int *s_runTime, int *event_good, int *n_bad_events){
 	if (n_run < 1201) { // old scaler readout
 	// Capt Scaler ************************
 		if (**p != 0x100cca1e) {
