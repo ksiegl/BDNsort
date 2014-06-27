@@ -212,7 +212,7 @@ int ReadADC1(int**, int, int*, int*);
 int ReadADC2(int**, int, int*, int*);
 int ReadTDC1(int**, int, int*, int*);
 int ReadTDC2(int**, int, int*, int*);
-int ReadScalers(int**, int, int, int*, int*, int*);
+int ReadScalers(int**, int, int, int*, int*,long int*, int*, int*);
 
 using namespace std;
 using namespace TMath;
