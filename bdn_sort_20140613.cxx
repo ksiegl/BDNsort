@@ -932,7 +932,7 @@ int main(int argc, char *argv[]) {
 				} // end while
 				*/
 			// Scalers ****************************	
-				ReadScalers(&p, n_trig, n_run, &all_trigs, &event_good, &n_bad_events);
+				ReadScalers(&p, n_trig, n_run, &all_trigs,&s_liveTime_us,&s_runTime, &event_good, &n_bad_events);
 				/*
 				if (n_run < 1201) { // old scaler readout
 				
@@ -3132,7 +3132,7 @@ int ReadTDC2(int **p, int n_trig, int *event_good, int *n_bad_events){
 	}
 }
 
-int ReadScalers(int **p, int n_trig, int n_run,int *all_trigs, int *event_good, int *n_bad_events){
+int ReadScalers(int **p, int n_trig, int n_run,int *all_trigs,int *s_liveTime_us,int *s_runTime, int *event_good, int *n_bad_events){
 	if (n_run < 1201) { // old scaler readout
 	// Capt Scaler ************************
 		if (**p != 0x100cca1e) {
@@ -3174,11 +3174,11 @@ int ReadScalers(int **p, int n_trig, int n_run,int *all_trigs, int *event_good, 
 		}
 		
 		(*p)++; // p is..  this is a bit iffy
-		bdn.s_liveTime_us = int(**p & 0xffffff);
+		*s_liveTime_us = int(**p & 0xffffff);
 		(*p)++;
 		(*all_trigs) = int(**p & 0xffffff);
 		(*p)++;
-		bdn.s_runTime = int(**p & 0xffffff);
+		*s_runTime = int(**p & 0xffffff);
 		//*p++; //p is at # of SiX4 hits since last eject
 		//s_SiX4 = int(*p & 0xffffff);
 		
