@@ -212,7 +212,7 @@ int ReadADC1(int**, int, int*, int*);
 int ReadADC2(int**, int, int*, int*);
 int ReadTDC1(int**, int, int*, int*);
 int ReadTDC2(int**, int, int*, int*);
-
+int ReadScalers(int**, int, int, int*, int*, int*)
 using namespace std;
 using namespace TMath;
 //using std::vector;
@@ -930,6 +930,9 @@ int main(int argc, char *argv[]) {
 					}
 				} // end while
 				*/
+			// Scalers ****************************	
+				ReadScalers(&p, n_trig, n_run, &all_trigs, &event_good, &n_bad_events)
+				/*
 				if (n_run < 1201) { // old scaler readout
 				
 				// Capt Scaler ************************
@@ -1009,7 +1012,8 @@ int main(int argc, char *argv[]) {
 					//s_SiX4 = int(*p & 0xffffff);
 					
 				} // end new scaler readout
-				
+				*/
+				/*
 			// MCP Pulse-heights correction for data above ADC range:
 				//printf(argv[2]);
 //				if (!strcmp(argv[2],"alpha")) {
@@ -1019,7 +1023,7 @@ int main(int argc, char *argv[]) {
 //					if (a_R_mcpD < a_missing_mcp_post) { a_R_mcpD = 6093; na_R_mcpD++; na_R_mcpD_missing++; }
 //					if (a_T_mcpC < a_missing_mcp_post) { a_T_mcpC = 5518; na_T_mcpC++; na_T_mcpC_missing++; }
 //				}
-				
+				*/
 			// Reconstruct one missing post
 				if (a_R_mcpA_corr < a_missing_mcp_post) {
 					bdn.miss_R_mcpA = 1;
@@ -1061,7 +1065,7 @@ int main(int argc, char *argv[]) {
 					na_T_mcpD_missing++;
 					if (a_mcp_lo < a_T_mcpA_corr + a_T_mcpB_corr + a_T_mcpC_corr) a_T_mcpD_corr = a_T_mcpA_corr*a_T_mcpC_corr/a_T_mcpB_corr;
 				}
-				
+				/*
 			// Fill tree with ADC data
 				bdn.a_R_ge			= a_R_ge;
 				bdn.a_R_ge_highE	= a_R_ge_highE;
@@ -1083,7 +1087,8 @@ int main(int argc, char *argv[]) {
 				bdn.a_R_mcpC		= a_R_mcpC;
 				bdn.a_R_mcpD		= a_R_mcpD;
 				bdn.a_R_mcpE		= a_R_mcpE;
-				
+				*/
+				/*
 			// Fill tree with TDC data
 				bdn.t_T_mcp			= t_T_mcp;
 				bdn.t_R_mcp			= t_R_mcp;
@@ -1096,6 +1101,7 @@ int main(int argc, char *argv[]) {
 				bdn.t_rf			= t_rf;
 				bdn.t_T_ge			= t_T_ge;
 				bdn.t_R_ge			= t_R_ge;
+				*/
 				
 			// Fill tree with Scaler data
 				bdn.s_ms_since_capt	= s_ms_since_capt;
@@ -3125,7 +3131,87 @@ int ReadTDC2(int **p, int n_trig, int *event_good, int *n_bad_events){
 	}
 }
 
+int ReadScalers(int **p, int n_trig, int n_run,int *all_trigs, int *event_good, int *n_bad_events){
+	if (n_run < 1201) { // old scaler readout
+	// Capt Scaler ************************
+		if (*p != 0x100cca1e) {
+			cout << "trig #" << n_trig << ", Capt Scaler marker not found where expected!" << endl;
+			event_good = 0;
+			n_bad_events++;
+			return -1;
+		}
+		*p++; // p is at time since capture in ms
+		bdn.s_ms_since_capt = int(*p & 0xffffff);
+		*p++; // p is at trap state | 0 = trap full, 1 = trap empty
+		bdn.s_capt_state = int(*p & 0xffffff);
+		*p++; // move pointer to eject scaler
+		
+	// Eject Scaler ***********************
+		if (*p != 0x100eca1e) {
+			cout << "trig #" << n_trig << ", Eject Scaler marker not found where expected!" << endl;
+			event_good = 0;
+			n_bad_events++;
+			return -1;
+		}
+		*p++; //p is at time since eject in ms
+		bdn.s_ms_since_eject = int(*p & 0xffffff);
+		*p++; //p is at # of capt since last eject
+		bdn.s_capt = int(*p & 0xffffff);
+		*p++; //p is at # of SiX4 hits since last eject
+		bdn.s_SiX4 = int(*p & 0xffffff);
 
+	} // end old scaler readout
+
+	else {	// new scaler readout
+
+	// Live Time Scaler ***********************
+		if (*p != 0x100cca1e) {
+			cout << "trig #" << n_trig << ", Livetime Scaler marker not found where expected!" << endl;
+			event_good = 0;
+			n_bad_events++;
+			return -1;
+		}
+		
+		*p++; // p is..  this is a bit iffy
+		bdn.s_liveTime_us = int(*p & 0xffffff);
+		*p++;
+		(*all_trigs) = int(*p & 0xffffff);
+		*p++;
+		bdn.s_runTime = int(*p & 0xffffff);
+		//*p++; //p is at # of SiX4 hits since last eject
+		//s_SiX4 = int(*p & 0xffffff);
+		
+		*p++; //this also iffy, check if it works?
+	// Capt Scaler ************************
+		if (*p != 0x100dca1e) {
+			cout << "trig #" << n_trig << ", Capt Scaler marker not found where expected!" << endl;
+			event_good = 0;
+			n_bad_events++;
+			return -1;
+		}
+		*p++; // p is at time since capture in ms
+		bdn.s_ms_since_capt = int(*p & 0xffffff);
+		*p++; // p is at trap state | 0 = trap full, 1 = trap empty
+		bdn.s_capt_state = int(*p & 0xffffff);
+		*p++; // move pointer to eject scaler
+		
+	// Eject Scaler ***********************
+		if (*p != 0x100eca1e) {
+			cout << "trig #" << n_trig << ", Eject Scaler marker not found where expected!" << endl;
+			event_good = 0;
+			n_bad_events++;
+			return -1;
+		}
+		*p++; //p is at time since eject in ms
+		bdn.s_ms_since_eject = int(*p & 0xffffff);
+		*p++; //p is at # of capt since last eject
+		bdn.s_capt = int(*p & 0xffffff);
+		//*p++; //p is at # of SiX4 hits since last eject
+		//s_SiX4 = int(*p & 0xffffff);
+		
+	} // end new scaler readout
+	return 0;
+}
 /*
 // void sync_sort(const struct ScarletEvntHdr *e) {
 	
