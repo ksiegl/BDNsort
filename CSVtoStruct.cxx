@@ -27,6 +27,9 @@
 //	- Added FindStructIndex, which Chris also wrote for me
 
 // Include Files
+#ifndef DEBUG
+#define DEBUG
+#endif
 #include "CSVtoStruct.h"
 #include <string>
 #include <iostream>
