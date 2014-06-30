@@ -619,7 +619,7 @@ int main(int argc, char *argv[]) {
 				e1 = e0[1];
 				p = reinterpret_cast<int*>(e1.body());
 			// ADC1 *******************************
-				ReadADC1(&p,n_trig,&event_good,&n_bad_events);
+				if(0!=ReadADC1(&p,n_trig,&event_good,&n_bad_events)) break;
 				/*
 				if (*p != 0xadc1adc1) {
 					cout << "trig #" << n_trig << ", ADC1 marker not found where expected!" << endl;
@@ -753,7 +753,7 @@ int main(int argc, char *argv[]) {
 				} // for (wordc)
 				*/
 			// ADC2 *******************************
-				ReadADC2(&p,n_trig,&event_good,&n_bad_events);
+				if(0!=ReadADC2(&p,n_trig,&event_good,&n_bad_events)) break;
 				/*
 				*p++; // move pointer to ADC2 marker
 				if (*p != 0xadc2adc2) {
@@ -839,7 +839,7 @@ int main(int argc, char *argv[]) {
 				*/
 				
 			// TDC1 *******************************
-				ReadTDC1(&p,n_trig,&event_good,&n_bad_events);
+				if(0!=ReadTDC1(&p,n_trig,&event_good,&n_bad_events)) break;
 				/*
 				*p++; // move pointer to TDC1 marker
 				if (*p != 0x2dc12dc1) {
@@ -899,7 +899,7 @@ int main(int argc, char *argv[]) {
 				} // while
 				*/
 			// TDC2 *******************************				
-				ReadTDC2(&p,n_trig,&event_good,&n_bad_events);
+				if(0!=ReadTDC2(&p,n_trig,&event_good,&n_bad_events)) break;
 				/*
 				if (*p != 0x2dc22dc2) {
 					cout << "trig #" << n_trig << ", TDC2 marker not found where expected!" << endl;
@@ -932,7 +932,7 @@ int main(int argc, char *argv[]) {
 				} // end while
 				*/
 			// Scalers ****************************	
-				ReadScalers(&p, n_trig, n_run, &all_trigs,&s_liveTime_us,&s_runTime, &event_good, &n_bad_events);
+				if(0!=ReadScalers(&p, n_trig, n_run, &all_trigs,&s_liveTime_us,&s_runTime, &event_good, &n_bad_events)) break;
 				/*
 				if (n_run < 1201) { // old scaler readout
 				
