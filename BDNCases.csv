@@ -1,0 +1,31 @@
+Casecode,B_fit_MonteCarlo1,137i07
+File path,/home/scaldwell/code/B_monte_carlo_feeding_lifetime_1.root,/music/bpt1/bpt/bdn/shane/137i/rootfiles/137i07.root
+File name,B_monte_carlo_feeding_lifetime_1.root,137i07.root
+Isotope,MC,137-I
+Dates, - , - 
+Log book (pages),BDN 3 (___ - ___),BDN 3 (___ - ___)
+Run files, - ,1763-1773; 1779; 1782-1843
+Species 1 (parent),137-Te,137-Te
+Species 2,137-I,137-I
+Species 3 (daughter),137-Xe,137-Xe
+Species 1 half-life (s),2.49,2.49
+Sp. 1 half-life unc (s),0.05,0.05
+Species 2 half-life (s),24.5,24.5
+Sp. 2 half-life unc (s),0.2,0.2
+Species 3 half-life (s),229.08,229.08
+Sp. 3 half-life unc (s),0.78,0.78
+(Species 1 lifetime (s)),3.592310652,3.592310652
+(Sp. 1 lifetime  unc (s)),0.072134752,0.072134752
+(Species 2 lifetime (s)),35.3460285,35.3460285
+(Sp. 2 lifetime unc (s)),0.288539008,0.288539008
+(Species 3 lifetime (s)),330.49258,330.49258
+(Sp. 3 lifetime unc (s)),1.125302132,1.125302132
+Cycle time (s),246,246
+Background time (s),101,101
+Capture time (s),5,6
+(Last capt time (s)),0,1
+RF Freq (kHz),-,0.01
+RF FnGen Ampl (Vpp),-,1
+RF Amp (W),-,24
+RF Meter (Vac),-,0.24
+Analysis notes,Write important information about this case here.,Write important information about this case here.
