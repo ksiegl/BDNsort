@@ -1,31 +1,43 @@
-Casecode,B_fit_MonteCarlo1,137i07
-File path,/home/scaldwell/code/B_monte_carlo_feeding_lifetime_1.root,/music/bpt1/bpt/bdn/shane/137i/rootfiles/137i07.root
-File name,B_monte_carlo_feeding_lifetime_1.root,137i07.root
-Isotope,MC,137-I
-Dates, - , - 
-Log book (pages),BDN 3 (___ - ___),BDN 3 (___ - ___)
-Run files, - ,1763-1773; 1779; 1782-1843
-Species 1 (parent),137-Te,137-Te
-Species 2,137-I,137-I
-Species 3 (daughter),137-Xe,137-Xe
-Species 1 half-life (s),2.49,2.49
-Sp. 1 half-life unc (s),0.05,0.05
-Species 2 half-life (s),24.5,24.5
-Sp. 2 half-life unc (s),0.2,0.2
-Species 3 half-life (s),229.08,229.08
-Sp. 3 half-life unc (s),0.78,0.78
-(Species 1 lifetime (s)),3.592310652,3.592310652
-(Sp. 1 lifetime  unc (s)),0.072134752,0.072134752
-(Species 2 lifetime (s)),35.3460285,35.3460285
-(Sp. 2 lifetime unc (s)),0.288539008,0.288539008
-(Species 3 lifetime (s)),330.49258,330.49258
-(Sp. 3 lifetime unc (s)),1.125302132,1.125302132
-Cycle time (s),246,246
-Background time (s),101,101
-Capture time (s),5,6
-(Last capt time (s)),0,1
-RF Freq (kHz),-,0.01
-RF FnGen Ampl (Vpp),-,1
-RF Amp (W),-,24
-RF Meter (Vac),-,0.24
-Analysis notes,Write important information about this case here.,Write important information about this case here.
+Casecode,BFitMC,137i07,138i06,138i07,134sb01,134sb02,134sb03,134sb0103,135sb07,135sb08,135te01,136sb01,144cs,145cs
+File path,/home/scaldwell/code/B_monte_carlo_feeding_lifetime_1.root,/music/bpt1/bpt/bdn/shane/137i/rootfiles/137i07.root,/music/bpt1/bpt/bdn/shane/138i/rootfiles/138i06.root,/music/bpt1/bpt/bdn/shane/138i/rootfiles/138i07.root,/music/bpt1/bpt/bdn/shane/134sb/rootfiles/134sb01.root,/music/bpt1/bpt/bdn/shane/134sb/rootfiles/134sb02.root,/music/bpt1/bpt/bdn/shane/134sb/rootfiles/134sb03.root,/music/bpt1/bpt/bdn/shane/134sb/rootfiles/134sb0103.root,/music/bpt1/bpt/bdn/shane/135sb/rootfiles/135sb07.root,/music/bpt1/bpt/bdn/shane/135sb/rootfiles/135sb08.root,/music/bpt1/bpt/bdn/shane/135te/rootfiles/135te01.root,/music/bpt1/bpt/bdn/shane/136sb/rootfiles/136sb01.root,/music/bpt1/bpt/bdn/shane/144cs/rootfiles/144cs02.root,/music/bpt1/bpt/bdn/shane/145cs/rootfiles/145cs02.root
+File name,B_monte_carlo_feeding_lifetime_1.root,137i07.root,138i06.root,138i07.root,134sb01.root,134sb02.root,134sb03.root,134sb0103.root,135sb07.root,135sb08.root,135te01.root,136sb01.root,144cs02.root,145cs02.root
+Isotope,MC,137-I,138-I,138-I,134-Sb,134-Sb,134-Sb,134-Sb,135-Sb,135-Sb,135-Te,136-Sb,144-Cs,145-Cs
+Dates,-0,20131204-20131205,20131202-20131203,20131203-20131204,20131211-20131212,20131212-20131213,20131213-20131213,20131211-20131213,20131126-20131128,20131126-20131128,20131126-20131128,20131206-20131208,-0,-0
+Log book (pages),-0,BDN 3 (30 -32),BDN 3 (27-27),BDN 3 (28-29),BDN 3 (38-43),BDN 3 (38-43),BDN 3 (43-43),BDN 3 (38-43),BDN 3 (18-19),BDN 3 (19-22),BDN 3 (23-23),BDN 3 (33-35),-0,-0
+Run files (no commas!),-0,1763-1773; 1779; 1782-1843,1684-1719,1720-1753,2066-2075; 2077; 2079-2092; 2095-2109,2112-2127 excluding: 2124-2126,2128-2153 excluding: 2142; 2152; 2153,134sb01 + 134sb03,1431-1434,1435-1462; 1465-1476; 1480-1494; 1496-1516; 1518-1533,1550-1559,1844-1877; 1881-1893; 1895-1970,1347-1430,1241-1265; 1269-1281
+Precursor,137-I,137-I,138-I,138-I,134-Sb,134-Sb,134-Sb,134-Sb,135-Sb,135-Sb,135-Te,136-Sb,144-Cs,145-Cs
+Emitter,137-Te,137-Te,138-Te,138-Te,134-Sn,134-Sn,134-Sn,134-Sn,135-Sn,135-Sn,135-Sb,136-Sn,144-Xe,145-Xe
+Daughter,136-Xe,136-Xe,137-Xe,137-Xe,133-Te,133-Te,133-Te,133-Te,134-Te,134-Te,134-I,135-Te,143-Ba,144-Ba
+Isobar daughter,137-Xe,137-Xe,138-Xe,138-Xe,134-Sb-m,134-Sb-m,134-Sb-m,134-Sb-m,135-Te,135-Te,135-I,136-Te,144-Ba,145-Ba
+Precursor mass (u-amu),136918028,136918028,137922726,137922726,133920535.7,133920535.7,133920535.7,133920535.7,134925185,134925185,134925185,135930746,143932076,144935527
+Emitter mass (u-amu),136911557.78,136911557.78,137914146,137914146,133911394,133911394,133911394,133911394,134916555.7,134916555.7,134916555.7,135920100.6,143922955,144927518
+Daughter mass (u-amu),135907214.48,135907214.48,136911557.78,136911557.78,132910969,132910969,132910969,132910969,133911394,133911394,133911394,134916555.7,142920625,143922955
+Species 1 half-life (s),2.49,2.49,1.4,1.4,1.05,1.05,1.05,1.05,0.53,0.53,1.679,0.25,0.388,0.188
+Sp. 1 half-life unc (s),0.05,0.05,0.4,0.4,0.011,0.011,0.011,0.011,0.02,0.02,0.015,0.03,0.007,0.004
+Species 2 half-life (s),24.5,24.5,6.23,6.23,0.78,0.78,0.78,0.78,1.679,1.679,19,0.923,0.994,0.587
+Sp. 2 half-life unc (s),0.2,0.2,0.03,0.03,0.06,0.06,0.06,0.06,0.015,0.015,0.2,0.014,0.006,0.005
+Species 3 half-life (s),229.08,229.08,844.8,844.8,10.07,10.07,10.07,10.07,19,19,23688,17.63,11.5,4.31
+Sp. 3 half-life unc (s),0.78,0.78,4.8,4.8,0.05,0.05,0.05,0.05,0.2,0.2,108,0.08,2,0.16
+Right MCP Width (mm),46,46,46,46,46,46,46,46,46,46,46,46,46,46
+Right Grid Distance (mm),48.25,48.25,48.25,48.25,48.25,48.25,48.25,48.25,48.25,48.25,48.25,48.25,48.25,48.25
+Right MCP Distance (mm),52.85,52.85,52.85,52.85,52.85,52.85,52.85,52.85,52.85,52.85,52.85,52.85,52.85,52.85
+Right MCP bias (kV),2.5,2.5,2.5,2.5,2.5,2.5,2.5,2.5,2.5,2.5,2.5,2.5,2.5,2.5
+Top MCP Width (mm),46,46,46,46,46,46,46,46,46,46,46,46,46,46
+Top Grid Distance (mm),48,48,48,48,48,48,48,48,48,48,48,48,48,48
+Top MCP Distance (mm),52.5,52.5,52.5,52.5,52.5,52.5,52.5,52.5,52.5,52.5,52.5,52.5,52.5,52.5
+Top MCP bias (kV),2.5,2.5,2.5,2.5,2.5,2.5,2.5,2.5,2.5,2.5,2.5,2.5,2.5,2.5
+Min En (threshold) (keV),100,100,100,100,100,100,100,100,100,100,100,100,100,100
+Cycle time (s),246,246,60,90,10.2,90,10.2,10.2,25,30,-0,13.5,-0,-0
+Background time (s),101,101,20.1,30.1,4.3,30,4.3,4.3,10.1,10.1,-0,4.5,-0,-0
+Capture time (s),5,6,2,6,0.6,6,0.6,0.6,1,1,-0,0.6,-0,-0
+(Last capt time (s)),0,1,1.9,5.9,0.5,0,0.5,0.5,0.9,0.9,-0,0,-0,-0
+Capt Veto Duration (us),260.5,260.5,260.5,260.5,260.5,260.5,260.5,260.5,260.5,260.5,260.5,260.5,260.5,260.5
+Capt Veto Overlap (us),168.2,168.2,168.2,168.2,168.2,168.2,168.2,168.2,168.2,168.2,168.2,168.2,168.2,168.2
+Evt Deadtime (us),142,142,142,142,142,142,142,142,142,142,142,142,142,142
+Evt Deadtime Unc (us),1,1,1,1,1,1,1,1,1,1,1,1,1,1
+RF Frequency (Hz),-0,310000,310000,310000,310000,310000,310000,310000,310000,310000,310000,310000,310000,310000
+"RF Meter Ampl (""Vac"")",-0,2.465,2.441,2.428,2.398,2.398,2.398,2.398,2.412,2.412,-0,2.465,-0,-0
+RF FnGen Ampl (Vpp),-0,0.44,0.437,0.437,0.425,0.425,0.425,0.425,0.432,0.432,0.432,0.44,-0,-0
+RF Amp (W),-0,77.5,75,75,73,69,69,69,74,74,73,77.5,-0,-0
+(Species 1 lifetime (s)),3.592310652,3.592310652,2.019773057,2.019773057,1.514829793,1.514829793,1.514829793,1.514829793,0.764628372,0.764628372,2.422284974,0.36067376,0.559765676,0.271226668
+(Sp. 1 lifetime  unc (s)),0.072134752,0.072134752,0.577078016,0.577078016,0.015869645,0.015869645,0.015869645,0.015869645,0.028853901,0.028853901,0.021640426,0.043280851,0.010098865,0.00577078
