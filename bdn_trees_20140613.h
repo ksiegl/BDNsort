@@ -85,8 +85,15 @@ struct bdnEvent_t
 	t_B_dE, t_L_dE, tof_LT, tof_LR, tof_BT, tof_BR, v_LT, v_LR, v_BT, v_BR, En_LT, En_LR, En_BT, En_BR, rf_phase;
 };
 
+struct mcpCorr_t
+{
+	double a_R_mcpA_corr, a_R_mcpB_corr, a_R_mcpC_corr, a_R_mcpD_corr, a_R_mcpE_corr, a_R_mcpSum_corr;
+	double a_T_mcpA_corr, a_T_mcpB_corr, a_T_mcpC_corr, a_T_mcpD_corr, a_T_mcpE_corr, a_T_mcpSum_corr;
+};
+
 EXTERNAL fileMetadata_t		metadata;
 EXTERNAL bdnEvent_t			bdn;
+EXTERNAL mcpCorr_t			corr;
 
 EXTERNAL TEventList *list_LT;
 EXTERNAL TEventList *list_LR;

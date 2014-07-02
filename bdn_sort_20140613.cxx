@@ -336,8 +336,8 @@ int main(int argc, char *argv[]) {
 	int a_L_dEa, a_L_dEb, a_L_E;
 	int a_R_mcpA, a_R_mcpB, a_R_mcpC, a_R_mcpD, a_R_mcpE, a_R_ge, a_R_ge_highE;
 	int a_T_mcpA, a_T_mcpB, a_T_mcpC, a_T_mcpD, a_T_mcpE, a_T_ge, a_T_ge_highE;
-	double a_R_mcpA_corr, a_R_mcpB_corr, a_R_mcpC_corr, a_R_mcpD_corr, a_R_mcpE_corr, a_R_mcpSum_corr;
-	double a_T_mcpA_corr, a_T_mcpB_corr, a_T_mcpC_corr, a_T_mcpD_corr, a_T_mcpE_corr, a_T_mcpSum_corr;
+//	double a_R_mcpA_corr, a_R_mcpB_corr, a_R_mcpC_corr, a_R_mcpD_corr, a_R_mcpE_corr, a_R_mcpSum_corr;
+//	double a_T_mcpA_corr, a_T_mcpB_corr, a_T_mcpC_corr, a_T_mcpD_corr, a_T_mcpE_corr, a_T_mcpSum_corr;
 		// "_ge" 		= HPGe 0-3.6 MeV range
 		// "_ge_highE"	= HPGe 0-9.2 MeV range
 	
@@ -557,16 +557,16 @@ int main(int argc, char *argv[]) {
 				e_T_ge_highE	= a_placeholder;
 				e_B_E			= a_placeholder;
 				e_L_E			= a_placeholder;
-				a_R_mcpA_corr	= a_placeholder;
-				a_R_mcpB_corr	= a_placeholder;
-				a_R_mcpC_corr	= a_placeholder;
-				a_R_mcpD_corr	= a_placeholder;
-				a_R_mcpE_corr	= a_placeholder;
-				a_T_mcpA_corr	= a_placeholder;
-				a_T_mcpB_corr	= a_placeholder;
-				a_T_mcpC_corr	= a_placeholder;
-				a_T_mcpD_corr	= a_placeholder;
-				a_T_mcpE_corr	= a_placeholder;
+				corr.a_R_mcpA_corr	= a_placeholder;
+				corr.a_R_mcpB_corr	= a_placeholder;
+				corr.a_R_mcpC_corr	= a_placeholder;
+				corr.a_R_mcpD_corr	= a_placeholder;
+				corr.a_R_mcpE_corr	= a_placeholder;
+				corr.a_T_mcpA_corr	= a_placeholder;
+				corr.a_T_mcpB_corr	= a_placeholder;
+				corr.a_T_mcpC_corr	= a_placeholder;
+				corr.a_T_mcpD_corr	= a_placeholder;
+				corr.a_T_mcpE_corr	= a_placeholder;
 				
 			// TDC placeholder values:
 				t_B_dEa			= t_placeholder;
@@ -1026,45 +1026,45 @@ int main(int argc, char *argv[]) {
 //				}
 				*/
 			// Reconstruct one missing post
-				if (a_R_mcpA_corr < a_missing_mcp_post) {
+				if (corr.a_R_mcpA_corr < a_missing_mcp_post) {
 					bdn.miss_R_mcpA = 1;
 					na_R_mcpA_missing++;
-					if (a_mcp_lo < a_R_mcpB_corr + a_R_mcpC_corr + a_R_mcpD_corr) a_R_mcpA_corr = a_R_mcpB_corr*a_R_mcpD_corr/a_R_mcpC_corr;
+					if (a_mcp_lo < corr.a_R_mcpB_corr + corr.a_R_mcpC_corr + corr.a_R_mcpD_corr) corr.a_R_mcpA_corr = corr.a_R_mcpB_corr*corr.a_R_mcpD_corr/corr.a_R_mcpC_corr;
 				}
-				if (a_R_mcpB_corr < a_missing_mcp_post) {
+				if (corr.a_R_mcpB_corr < a_missing_mcp_post) {
 					bdn.miss_R_mcpB = 1;
 					na_R_mcpB_missing++;
-					if (a_mcp_lo < a_R_mcpA_corr + a_R_mcpC_corr + a_R_mcpD_corr) a_R_mcpB_corr = a_R_mcpA_corr*a_R_mcpC_corr/a_R_mcpD_corr;
+					if (a_mcp_lo < corr.a_R_mcpA_corr + corr.a_R_mcpC_corr + corr.a_R_mcpD_corr) corr.a_R_mcpB_corr = corr.a_R_mcpA_corr*corr.a_R_mcpC_corr/corr.a_R_mcpD_corr;
 				}
-				if (a_R_mcpC_corr < a_missing_mcp_post) {
+				if (corr.a_R_mcpC_corr < a_missing_mcp_post) {
 					bdn.miss_R_mcpC = 1;
 					na_R_mcpC_missing++;
-					if (a_mcp_lo < a_R_mcpA_corr + a_R_mcpB_corr + a_R_mcpD_corr) a_R_mcpC_corr = a_R_mcpB_corr*a_R_mcpD_corr/a_R_mcpA_corr;
+					if (a_mcp_lo < corr.a_R_mcpA_corr + corr.a_R_mcpB_corr + corr.a_R_mcpD_corr) corr.a_R_mcpC_corr = corr.a_R_mcpB_corr*corr.a_R_mcpD_corr/corr.a_R_mcpA_corr;
 				}
-				if (a_R_mcpD_corr < a_missing_mcp_post) {
+				if (corr.a_R_mcpD_corr < a_missing_mcp_post) {
 					bdn.miss_R_mcpD = 1;
 					na_R_mcpD_missing++;
-					if (a_mcp_lo < a_R_mcpA_corr + a_R_mcpB_corr + a_R_mcpC_corr) a_R_mcpD_corr = a_R_mcpA_corr*a_R_mcpC_corr/a_R_mcpB_corr;
+					if (a_mcp_lo < corr.a_R_mcpA_corr + corr.a_R_mcpB_corr + corr.a_R_mcpC_corr) corr.a_R_mcpD_corr = corr.a_R_mcpA_corr*corr.a_R_mcpC_corr/corr.a_R_mcpB_corr;
 				}
-				if (a_T_mcpA_corr < a_missing_mcp_post) {
+				if (corr.a_T_mcpA_corr < a_missing_mcp_post) {
 					bdn.miss_T_mcpA = 1;
 					na_T_mcpA_missing++;
-					if (a_mcp_lo < a_T_mcpB_corr + a_T_mcpC_corr + a_T_mcpD_corr) a_T_mcpA_corr = a_T_mcpB_corr*a_T_mcpD_corr/a_T_mcpC_corr;
+					if (a_mcp_lo < corr.a_T_mcpB_corr + corr.a_T_mcpC_corr + corr.a_T_mcpD_corr) corr.a_T_mcpA_corr = corr.a_T_mcpB_corr*corr.a_T_mcpD_corr/corr.a_T_mcpC_corr;
 				}
-				if (a_T_mcpB_corr < a_missing_mcp_post) {
+				if (corr.a_T_mcpB_corr < a_missing_mcp_post) {
 					bdn.miss_T_mcpB = 1;
 					na_T_mcpB_missing++;
-					if (a_mcp_lo < a_T_mcpA_corr + a_T_mcpC_corr + a_T_mcpD_corr) a_T_mcpB_corr = a_T_mcpA_corr*a_T_mcpC_corr/a_T_mcpD_corr;
+					if (a_mcp_lo < corr.a_T_mcpA_corr + corr.a_T_mcpC_corr + corr.a_T_mcpD_corr) corr.a_T_mcpB_corr = corr.a_T_mcpA_corr*corr.a_T_mcpC_corr/corr.a_T_mcpD_corr;
 				}
-				if (a_T_mcpC_corr < a_missing_mcp_post) {
+				if (corr.a_T_mcpC_corr < a_missing_mcp_post) {
 					bdn.miss_T_mcpC = 1;
 					na_T_mcpC_missing++;
-					if (a_mcp_lo < a_T_mcpA_corr + a_T_mcpB_corr + a_T_mcpD_corr) a_T_mcpC_corr = a_T_mcpB_corr*a_T_mcpD_corr/a_T_mcpA_corr;
+					if (a_mcp_lo < corr.a_T_mcpA_corr + corr.a_T_mcpB_corr + corr.a_T_mcpD_corr) corr.a_T_mcpC_corr = corr.a_T_mcpB_corr*corr.a_T_mcpD_corr/corr.a_T_mcpA_corr;
 				}
-				if (a_T_mcpD_corr < a_missing_mcp_post) {
+				if (corr.a_T_mcpD_corr < a_missing_mcp_post) {
 					bdn.miss_T_mcpD = 1;
 					na_T_mcpD_missing++;
-					if (a_mcp_lo < a_T_mcpA_corr + a_T_mcpB_corr + a_T_mcpC_corr) a_T_mcpD_corr = a_T_mcpA_corr*a_T_mcpC_corr/a_T_mcpB_corr;
+					if (a_mcp_lo < corr.a_T_mcpA_corr + corr.a_T_mcpB_corr + corr.a_T_mcpC_corr) corr.a_T_mcpD_corr = corr.a_T_mcpA_corr*corr.a_T_mcpC_corr/corr.a_T_mcpB_corr;
 				}
 				/*
 			// Fill tree with ADC data
@@ -1126,11 +1126,11 @@ int main(int argc, char *argv[]) {
 				bdn.rf_phase	= (stBDNCase.dRFFrequencyHz/1000000000)*(1710.0-t_rf-randgen->Rndm());
 				h_all_vs_rf_phase_observed->Fill(bdn.rf_phase);
 //				ht_rf_phase_observed->Fill(bdn.rf_phase);
-				bdn.a_B_dEsum	= a_B_dEa + a_B_dEb;
-				bdn.a_L_dEsum	= a_L_dEa + a_L_dEb;
-				bdn.t_B_dE		= 0.5*static_cast<double>(t_B_dEa + t_B_dEb);
-				bdn.t_L_dE		= 0.5*static_cast<double>(t_L_dEa + t_L_dEb);
-				bdn.a_T_mcpSum	= a_T_mcpA + a_T_mcpB + a_T_mcpC + a_T_mcpD;
+				bdn.a_B_dEsum	= bdn.a_B_dEa + bdn.a_B_dEb;
+				bdn.a_L_dEsum	= bdn.a_L_dEa + bdn.a_L_dEb;
+				bdn.t_B_dE		= 0.5*static_cast<double>(bdn.t_B_dEa + bdn.t_B_dEb);
+				bdn.t_L_dE		= 0.5*static_cast<double>(bdn.t_L_dEa + bdn.t_L_dEb);
+				bdn.a_T_mcpSum	= bdn.a_T_mcpA + bdn.a_T_mcpB + bdn.a_T_mcpC + bdn.a_T_mcpD;
 				ha_T_mcpSum		->Fill(bdn.a_T_mcpSum);
 				a_T_mcpSum_corr = a_T_mcpA_corr + a_T_mcpB_corr + a_T_mcpC_corr + a_T_mcpD_corr;
 				ha_T_mcpSum_corr->Fill(a_T_mcpSum_corr);
@@ -2875,25 +2875,29 @@ int ReadADC1(int **p,int n_trig, int *event_good,int *n_bad_events) {
 		case 5:
 			bdn.a_T_mcpA = x;
 			ha_T_mcpA->Fill(x);
-			ha_T_mcpA_corr->Fill(x - ped_T_mcpA + randgen->Rndm());
+			corr.a_T_mcpA_corr= x - ped_T_mcpA + randgen->Rndm();
+			ha_T_mcpA_corr->Fill(corr.a_T_mcpA_corr);
 			metadata.n_adc_hits_T_mcpA++;
 		break;
 		case 6:
 			bdn.a_T_mcpB = x;
 			ha_T_mcpB->Fill(x);
-			ha_T_mcpB_corr->Fill(x - ped_T_mcpB + randgen->Rndm());
+			corr.a_T_mcpB_corr= x - ped_T_mcpB + randgen->Rndm();
+			ha_T_mcpB_corr->Fill(corr.a_T_mcpB_corr);
 			metadata.n_adc_hits_T_mcpB++;
 		break;
 		case 7:
 			bdn.a_T_mcpC = x;
 			ha_T_mcpC->Fill(x);
-			ha_T_mcpC_corr->Fill(x - ped_T_mcpC + randgen->Rndm());
+			corr.a_T_mcpC_corr= x - ped_T_mcpC + randgen->Rndm();
+			ha_T_mcpC_corr->Fill(corr.a_T_mcpC_corr);
 			metadata.n_adc_hits_T_mcpC++;
 		break;
 		case 8:
 			bdn.a_T_mcpD = x;
 			ha_T_mcpD->Fill(x);
-			ha_T_mcpD_corr->Fill(x - ped_T_mcpD + randgen->Rndm());
+			corr.a_T_mcpD_corr= x - ped_T_mcpD + randgen->Rndm();
+			ha_T_mcpD_corr->Fill(corr.a_T_mcpD_corr);
 			metadata.n_adc_hits_T_mcpD++;
 		break;
 		//if (adc_ch == 9) {
@@ -2904,7 +2908,8 @@ int ReadADC1(int **p,int n_trig, int *event_good,int *n_bad_events) {
 		case 9:
 			bdn.a_R_mcpE = x;
 			ha_R_mcpE->Fill(x);
-			ha_R_mcpE_corr->Fill(x - ped_R_mcpE + randgen->Rndm());
+			corr.a_R_mcpE_corr= x - ped_R_mcpE + randgen->Rndm();
+			ha_R_mcpE_corr->Fill(corr.a_R_mcpE_corr);
 			metadata.n_adc_hits_R_mcpE++;
 		break;
 		case 10:
@@ -2925,25 +2930,29 @@ int ReadADC1(int **p,int n_trig, int *event_good,int *n_bad_events) {
 		case 13:
 			bdn.a_R_mcpA = x;
 			ha_R_mcpA->Fill(x);
-			ha_R_mcpA_corr->Fill(x - ped_R_mcpA + randgen->Rndm());
+			corr.a_R_mcpA_corr= x - ped_R_mcpA + randgen->Rndm();
+			ha_R_mcpA_corr->Fill(corr.a_R_mcpA_corr);
 			metadata.n_adc_hits_R_mcpA++;
 		break;
 		case 14:
 			bdn.a_R_mcpB = x;
 			ha_R_mcpB->Fill(x);
-			ha_R_mcpB_corr->Fill(x - ped_R_mcpB + randgen->Rndm());
+			corr.a_R_mcpB_corr= x - ped_R_mcpB + randgen->Rndm();
+			ha_R_mcpB_corr->Fill(corr.a_R_mcpB_corr);
 			metadata.n_adc_hits_R_mcpB++;
 		break;
 		case 15:
 			bdn.a_R_mcpC = x;
 			ha_R_mcpC->Fill(x);
-			ha_R_mcpC_corr->Fill(x - ped_R_mcpC + randgen->Rndm());
+			corr.a_R_mcpC_corr= x - ped_R_mcpC + randgen->Rndm();
+			ha_R_mcpC_corr->Fill(corr.a_R_mcpC_corr);
 			metadata.n_adc_hits_R_mcpC++;
 		break;
 		case 16:
 			bdn.a_R_mcpD = x;
 			ha_R_mcpD->Fill(x);
-			ha_R_mcpD_corr->Fill( x - ped_R_mcpD + randgen->Rndm());
+			corr.a_R_mcpD_corr= x - ped_R_mcpD + randgen->Rndm();
+			ha_R_mcpD_corr->Fill(corr.a_R_mcpD_corr);
 			metadata.n_adc_hits_R_mcpD++;
 		break;
 		default:
