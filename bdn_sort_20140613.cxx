@@ -2470,7 +2470,7 @@ int main(int argc, char *argv[]) {
 	nt_all		= nt_B_dEa + nt_B_dEb + nt_B_E + nt_L_dEa + nt_L_dEb + nt_L_E + nt_R_mcp + nt_R_ge + nt_T_mcp + nt_T_ge;
 	
 //~~~~~~~~ Fill metadata (tree) ~~~~~~~~//
-	
+
 	metadata.n_run			= n_run;
 	metadata.n_trigs		= n_trig;
 	metadata.tot_trigs		= tot_trigs;
@@ -2491,7 +2491,7 @@ int main(int argc, char *argv[]) {
 	metadata.stop_sec		= stop_sec;
 	metadata.stop_time_sec	= stop_time_sec;
 	metadata.run_time_sec	= run_time_sec;
-	
+	/*
 	metadata.n_scaler_hits_B_dEa	= sTot_B_dEa;
 	metadata.n_scaler_hits_B_dEb	= sTot_B_dEb;
 	metadata.n_scaler_hits_B_E		= sTot_B_E;
@@ -2534,6 +2534,7 @@ int main(int argc, char *argv[]) {
 	metadata.n_adc_hits_T_mcpE		= na_T_mcpE;
 	metadata.n_adc_hits_T_ge		= na_T_ge;
 	metadata.n_adc_hits_T_ge_highE	= na_T_ge_highE;
+	*/
 	metadata.n_missing_adc_hits_R_mcpA	= na_R_mcpA_missing;
 	metadata.n_missing_adc_hits_R_mcpB	= na_R_mcpB_missing;
 	metadata.n_missing_adc_hits_R_mcpC	= na_R_mcpC_missing;
@@ -2728,24 +2729,24 @@ int main(int argc, char *argv[]) {
 	printf("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 	printf("\n                 Scaler     TDC     ADC");
 	printf("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-	printf("\nBottom dEa   : %8.2f%8.2f%8.2f", sTot_B_dEa	/ (float)sync_time_sec, nt_B_dEa	/ (float)run_time_sec, na_B_dEa	/ (float)run_time_sec);
-	printf("\nBottom dEb   : %8.2f%8.2f%8.2f", sTot_B_dEb	/ (float)sync_time_sec, nt_B_dEb	/ (float)run_time_sec, na_B_dEb	/ (float)run_time_sec);
-	printf("\nBottom E     : %8.2f%8.2f%8.2f", sTot_B_E		/ (float)sync_time_sec, nt_B_E		/ (float)run_time_sec, na_B_E	/ (float)run_time_sec);
-	printf("\nLeft   dEa   : %8.2f%8.2f%8.2f", sTot_L_dEa	/ (float)sync_time_sec, nt_L_dEa	/ (float)run_time_sec, na_L_dEa	/ (float)run_time_sec);
-	printf("\nLeft   dEb   : %8.2f%8.2f%8.2f", sTot_L_dEb	/ (float)sync_time_sec, nt_L_dEb	/ (float)run_time_sec, na_L_dEb	/ (float)run_time_sec);
-	printf("\nLeft   E     : %8.2f%8.2f%8.2f", sTot_L_E		/ (float)sync_time_sec, nt_L_E		/ (float)run_time_sec, na_L_E	/ (float)run_time_sec);
-	printf("\nRight  Ge    : %8.2f%8.2f%8.2f", sTot_R_ge	/ (float)sync_time_sec, nt_R_ge		/ (float)run_time_sec, na_R_ge	/ (float)run_time_sec);
-	printf("\nTop    Ge    : %8.2f%8.2f%8.2f", sTot_T_ge	/ (float)sync_time_sec, nt_T_ge		/ (float)run_time_sec, na_T_ge	/ (float)run_time_sec);
+	printf("\nBottom dEa   : %8.2f%8.2f%8.2f", sTot_B_dEa	/ (float)sync_time_sec, nt_B_dEa	/ (float)run_time_sec, metadata.n_adc_hits_B_dEa	/ (float)run_time_sec);
+	printf("\nBottom dEb   : %8.2f%8.2f%8.2f", sTot_B_dEb	/ (float)sync_time_sec, nt_B_dEb	/ (float)run_time_sec, metadata.n_adc_hits_B_dEb	/ (float)run_time_sec);
+	printf("\nBottom E     : %8.2f%8.2f%8.2f", sTot_B_E		/ (float)sync_time_sec, nt_B_E		/ (float)run_time_sec, metadata.n_adc_hits_B_E	/ (float)run_time_sec);
+	printf("\nLeft   dEa   : %8.2f%8.2f%8.2f", sTot_L_dEa	/ (float)sync_time_sec, nt_L_dEa	/ (float)run_time_sec, metadata.n_adc_hits_L_dEa	/ (float)run_time_sec);
+	printf("\nLeft   dEb   : %8.2f%8.2f%8.2f", sTot_L_dEb	/ (float)sync_time_sec, nt_L_dEb	/ (float)run_time_sec, metadata.n_adc_hits_L_dEb	/ (float)run_time_sec);
+	printf("\nLeft   E     : %8.2f%8.2f%8.2f", sTot_L_E		/ (float)sync_time_sec, nt_L_E		/ (float)run_time_sec, metadata.n_adc_hits_L_E	/ (float)run_time_sec);
+	printf("\nRight  Ge    : %8.2f%8.2f%8.2f", sTot_R_ge	/ (float)sync_time_sec, nt_R_ge		/ (float)run_time_sec, metadata.n_adc_hits_R_ge	/ (float)run_time_sec);
+	printf("\nTop    Ge    : %8.2f%8.2f%8.2f", sTot_T_ge	/ (float)sync_time_sec, nt_T_ge		/ (float)run_time_sec, metadata.n_adc_hits_T_ge	/ (float)run_time_sec);
 	printf("\nRight  MCP   : %8.2f%8.2f"	 , sTot_R_mcp	/ (float)sync_time_sec, nt_R_mcp	/ (float)run_time_sec);
-	printf("\nRight  MCP A :                 %8.2f", na_R_mcpA	/ (float)run_time_sec);
-	printf("\nRight  MCP B :                 %8.2f", na_R_mcpB	/ (float)run_time_sec);
-	printf("\nRight  MCP C :                 %8.2f", na_R_mcpC	/ (float)run_time_sec);
-	printf("\nRight  MCP D :                 %8.2f", na_R_mcpD	/ (float)run_time_sec);
+	printf("\nRight  MCP A :                 %8.2f", metadata.n_adc_hits_R_mcpA	/ (float)run_time_sec);
+	printf("\nRight  MCP B :                 %8.2f", metadata.n_adc_hits_R_mcpB	/ (float)run_time_sec);
+	printf("\nRight  MCP C :                 %8.2f", metadata.n_adc_hits_R_mcpC	/ (float)run_time_sec);
+	printf("\nRight  MCP D :                 %8.2f", metadata.n_adc_hits_R_mcpD	/ (float)run_time_sec);
 	printf("\nTop    MCP   : %8.2f%8.2f"	 , sTot_T_mcp	/ (float)sync_time_sec, nt_T_mcp	/ (float)run_time_sec);
-	printf("\nTop    MCP A :                 %8.2f", na_T_mcpA	/ (float)run_time_sec);
-	printf("\nTop    MCP B :                 %8.2f", na_T_mcpB	/ (float)run_time_sec);
-	printf("\nTop    MCP C :                 %8.2f", na_T_mcpC	/ (float)run_time_sec);
-	printf("\nTop    MCP D :                 %8.2f", na_T_mcpD	/ (float)run_time_sec);
+	printf("\nTop    MCP A :                 %8.2f", metadata.n_adc_hits_T_mcpA	/ (float)run_time_sec);
+	printf("\nTop    MCP B :                 %8.2f", metadata.n_adc_hits_T_mcpB	/ (float)run_time_sec);
+	printf("\nTop    MCP C :                 %8.2f", metadata.n_adc_hits_T_mcpC	/ (float)run_time_sec);
+	printf("\nTop    MCP D :                 %8.2f", metadata.n_adc_hits_T_mcpD	/ (float)run_time_sec);
 	printf("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 	printf("\nSums         : %8.2f%8.2f"	 , sTot_all		/ (float)sync_time_sec, nt_all		/ (float)run_time_sec);
 	printf("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
