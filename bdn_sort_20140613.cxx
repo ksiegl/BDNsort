@@ -1147,7 +1147,7 @@ int main(int argc, char *argv[]) {
 				bdn.run 		=  n_run;
 				
 		// MCP Maps -- Top
-				if (a_mcp_lo < a_T_mcpSum_corr) {
+				if (a_mcp_lo < corr.a_T_mcpSum_corr) {
 					h_T_mcpX->Fill(bdn.T_mcpX);
 					h_T_mcpY->Fill(bdn.T_mcpY);
 				// 3-post events
@@ -1207,7 +1207,7 @@ int main(int argc, char *argv[]) {
 					}
 				}
 		// MCP Maps -- Right
-				if (a_mcp_lo < a_R_mcpSum_corr) {
+				if (a_mcp_lo < corr.a_R_mcpSum_corr) {
 					h_R_mcpX->Fill(bdn.R_mcpX);
 					h_R_mcpY->Fill(bdn.R_mcpY);
 				// 3-post events
