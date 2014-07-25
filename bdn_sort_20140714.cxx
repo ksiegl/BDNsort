@@ -2837,7 +2837,7 @@ int ReadADC1(int **p,int n_trig, int *event_good,int *n_bad_events) {
 	(*p)++; // move to ADC1 hit register
 	x = int(int(*(*p)) & 0xffff ); // hit register, tells which channels were hit
 	wordc = countbit(x);
-	
+	cout << "Bit Count "<< wordc << endl;
 	for (int j=1; j<=wordc; j++) { // Loop over all ADC channels which have hits
 		(*p)++;  // Increment pointer p to ADC channel with a hit
 		x = int((*(*p)) & 0x0fff);
