@@ -2808,7 +2808,7 @@ int countbit(int x) {
 	}
 	return n;
 }
-
+/*
 int ReadADC1(int *p,int n_trig, int *event_good,int *n_bad_events) {
 // ADC1 *******************************
 	int x, adc_ch, wordc;
@@ -2945,6 +2945,7 @@ int ReadADC1(int *p,int n_trig, int *event_good,int *n_bad_events) {
 	} // for (wordc)
 	return 0;
 }
+*/
 /*
 // void sync_sort(const struct ScarletEvntHdr *e) {
 	
