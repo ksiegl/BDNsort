@@ -208,16 +208,14 @@ int countbit(int x);
 int time_in_seconds(int, int, int, int);
 Double_t tofToMCPGrid (BDNCase_t, char, Double_t);
 int tofCounting();
-int ReadADC1(int**, int, int*, int*);
-int ReadADC2(int**, int, int*, int*);
-int ReadTDC1(int**, int, int*, int*);
-int ReadTDC2(int**, int, int*, int*);
-int ReadScalers(int**, int, int, int*, int*,long int*, int*, int*);
+int ReadADC1(int*, int, int*, int*);
+int ReadADC2(int*, int, int*, int*);
+int ReadTDC1(int*);
+int ReadTDC2(int*);
 
 using namespace std;
 using namespace TMath;
 //using std::vector;
-TRandom3 *randgen = new TRandom3(1);
 
 int main(int argc, char *argv[]) {
 	
@@ -336,8 +334,8 @@ int main(int argc, char *argv[]) {
 	int a_L_dEa, a_L_dEb, a_L_E;
 	int a_R_mcpA, a_R_mcpB, a_R_mcpC, a_R_mcpD, a_R_mcpE, a_R_ge, a_R_ge_highE;
 	int a_T_mcpA, a_T_mcpB, a_T_mcpC, a_T_mcpD, a_T_mcpE, a_T_ge, a_T_ge_highE;
-//	double a_R_mcpA_corr, a_R_mcpB_corr, a_R_mcpC_corr, a_R_mcpD_corr, a_R_mcpE_corr, a_R_mcpSum_corr;
-//	double a_T_mcpA_corr, a_T_mcpB_corr, a_T_mcpC_corr, a_T_mcpD_corr, a_T_mcpE_corr, a_T_mcpSum_corr;
+	double a_R_mcpA_corr, a_R_mcpB_corr, a_R_mcpC_corr, a_R_mcpD_corr, a_R_mcpE_corr, a_R_mcpSum_corr;
+	double a_T_mcpA_corr, a_T_mcpB_corr, a_T_mcpC_corr, a_T_mcpD_corr, a_T_mcpE_corr, a_T_mcpSum_corr;
 		// "_ge" 		= HPGe 0-3.6 MeV range
 		// "_ge_highE"	= HPGe 0-9.2 MeV range
 	
@@ -365,7 +363,7 @@ int main(int argc, char *argv[]) {
 	long tot_trigs = 0;
 	
 	// Energy values (new 2013-12-01)
-	
+	TRandom3 *randgen = new TRandom3(1);
 	Double_t y, e_B_E, e_L_E, e_R_ge, e_R_ge_highE, e_T_ge, e_T_ge_highE;
 	
 	// Event counts for ADC (na_), TDC (nt_):
@@ -557,16 +555,16 @@ int main(int argc, char *argv[]) {
 				e_T_ge_highE	= a_placeholder;
 				e_B_E			= a_placeholder;
 				e_L_E			= a_placeholder;
-				corr.a_R_mcpA_corr	= a_placeholder;
-				corr.a_R_mcpB_corr	= a_placeholder;
-				corr.a_R_mcpC_corr	= a_placeholder;
-				corr.a_R_mcpD_corr	= a_placeholder;
-				corr.a_R_mcpE_corr	= a_placeholder;
-				corr.a_T_mcpA_corr	= a_placeholder;
-				corr.a_T_mcpB_corr	= a_placeholder;
-				corr.a_T_mcpC_corr	= a_placeholder;
-				corr.a_T_mcpD_corr	= a_placeholder;
-				corr.a_T_mcpE_corr	= a_placeholder;
+				a_R_mcpA_corr	= a_placeholder;
+				a_R_mcpB_corr	= a_placeholder;
+				a_R_mcpC_corr	= a_placeholder;
+				a_R_mcpD_corr	= a_placeholder;
+				a_R_mcpE_corr	= a_placeholder;
+				a_T_mcpA_corr	= a_placeholder;
+				a_T_mcpB_corr	= a_placeholder;
+				a_T_mcpC_corr	= a_placeholder;
+				a_T_mcpD_corr	= a_placeholder;
+				a_T_mcpE_corr	= a_placeholder;
 				
 			// TDC placeholder values:
 				t_B_dEa			= t_placeholder;
@@ -618,9 +616,8 @@ int main(int argc, char *argv[]) {
 				e0 = ScarletEvnt(h);
 				e1 = e0[1];
 				p = reinterpret_cast<int*>(e1.body());
+				
 			// ADC1 *******************************
-				if(0!=ReadADC1(&p,n_trig,&event_good,&n_bad_events)) break;
-				/*
 				if (*p != 0xadc1adc1) {
 					cout << "trig #" << n_trig << ", ADC1 marker not found where expected!" << endl;
 					event_good = 0;
@@ -751,10 +748,8 @@ int main(int argc, char *argv[]) {
 					}
 					
 				} // for (wordc)
-				*/
+				
 			// ADC2 *******************************
-				if(0!=ReadADC2(&p,n_trig,&event_good,&n_bad_events)) break;
-				/*
 				*p++; // move pointer to ADC2 marker
 				if (*p != 0xadc2adc2) {
 					cout << "trig #" << n_trig << ", ADC2 marker not found where expected!" << endl;
@@ -836,11 +831,9 @@ int main(int argc, char *argv[]) {
 						na_R_ge++;
 					}
 				} // for (wordc)
-				*/
+				
 				
 			// TDC1 *******************************
-				if(0!=ReadTDC1(&p,n_trig,&event_good,&n_bad_events)) break;
-				/*
 				*p++; // move pointer to TDC1 marker
 				if (*p != 0x2dc12dc1) {
 					cout << "trig #" << n_trig << ", TDC1 marker not found where expected!" << endl;
@@ -897,10 +890,8 @@ int main(int argc, char *argv[]) {
 						nt_L_E++;
 					}
 				} // while
-				*/
+				
 			// TDC2 *******************************				
-				if(0!=ReadTDC2(&p,n_trig,&event_good,&n_bad_events)) break;
-				/*
 				if (*p != 0x2dc22dc2) {
 					cout << "trig #" << n_trig << ", TDC2 marker not found where expected!" << endl;
 					event_good = 0;
@@ -930,10 +921,7 @@ int main(int argc, char *argv[]) {
 						nt_R_ge++;
 					}
 				} // end while
-				*/
-			// Scalers ****************************	
-				if(0!=ReadScalers(&p, n_trig, n_run, &all_trigs,&s_liveTime_us,&s_runTime, &event_good, &n_bad_events)) break;
-				/*
+				
 				if (n_run < 1201) { // old scaler readout
 				
 				// Capt Scaler ************************
@@ -1013,8 +1001,7 @@ int main(int argc, char *argv[]) {
 					//s_SiX4 = int(*p & 0xffffff);
 					
 				} // end new scaler readout
-				*/
-				/*
+				
 			// MCP Pulse-heights correction for data above ADC range:
 				//printf(argv[2]);
 //				if (!strcmp(argv[2],"alpha")) {
@@ -1024,49 +1011,49 @@ int main(int argc, char *argv[]) {
 //					if (a_R_mcpD < a_missing_mcp_post) { a_R_mcpD = 6093; na_R_mcpD++; na_R_mcpD_missing++; }
 //					if (a_T_mcpC < a_missing_mcp_post) { a_T_mcpC = 5518; na_T_mcpC++; na_T_mcpC_missing++; }
 //				}
-				*/
+				
 			// Reconstruct one missing post
-				if (corr.a_R_mcpA_corr < a_missing_mcp_post) {
+				if (a_R_mcpA_corr < a_missing_mcp_post) {
 					bdn.miss_R_mcpA = 1;
 					na_R_mcpA_missing++;
-					if (a_mcp_lo < corr.a_R_mcpB_corr + corr.a_R_mcpC_corr + corr.a_R_mcpD_corr) corr.a_R_mcpA_corr = corr.a_R_mcpB_corr*corr.a_R_mcpD_corr/corr.a_R_mcpC_corr;
+					if (a_mcp_lo < a_R_mcpB_corr + a_R_mcpC_corr + a_R_mcpD_corr) a_R_mcpA_corr = a_R_mcpB_corr*a_R_mcpD_corr/a_R_mcpC_corr;
 				}
-				if (corr.a_R_mcpB_corr < a_missing_mcp_post) {
+				if (a_R_mcpB_corr < a_missing_mcp_post) {
 					bdn.miss_R_mcpB = 1;
 					na_R_mcpB_missing++;
-					if (a_mcp_lo < corr.a_R_mcpA_corr + corr.a_R_mcpC_corr + corr.a_R_mcpD_corr) corr.a_R_mcpB_corr = corr.a_R_mcpA_corr*corr.a_R_mcpC_corr/corr.a_R_mcpD_corr;
+					if (a_mcp_lo < a_R_mcpA_corr + a_R_mcpC_corr + a_R_mcpD_corr) a_R_mcpB_corr = a_R_mcpA_corr*a_R_mcpC_corr/a_R_mcpD_corr;
 				}
-				if (corr.a_R_mcpC_corr < a_missing_mcp_post) {
+				if (a_R_mcpC_corr < a_missing_mcp_post) {
 					bdn.miss_R_mcpC = 1;
 					na_R_mcpC_missing++;
-					if (a_mcp_lo < corr.a_R_mcpA_corr + corr.a_R_mcpB_corr + corr.a_R_mcpD_corr) corr.a_R_mcpC_corr = corr.a_R_mcpB_corr*corr.a_R_mcpD_corr/corr.a_R_mcpA_corr;
+					if (a_mcp_lo < a_R_mcpA_corr + a_R_mcpB_corr + a_R_mcpD_corr) a_R_mcpC_corr = a_R_mcpB_corr*a_R_mcpD_corr/a_R_mcpA_corr;
 				}
-				if (corr.a_R_mcpD_corr < a_missing_mcp_post) {
+				if (a_R_mcpD_corr < a_missing_mcp_post) {
 					bdn.miss_R_mcpD = 1;
 					na_R_mcpD_missing++;
-					if (a_mcp_lo < corr.a_R_mcpA_corr + corr.a_R_mcpB_corr + corr.a_R_mcpC_corr) corr.a_R_mcpD_corr = corr.a_R_mcpA_corr*corr.a_R_mcpC_corr/corr.a_R_mcpB_corr;
+					if (a_mcp_lo < a_R_mcpA_corr + a_R_mcpB_corr + a_R_mcpC_corr) a_R_mcpD_corr = a_R_mcpA_corr*a_R_mcpC_corr/a_R_mcpB_corr;
 				}
-				if (corr.a_T_mcpA_corr < a_missing_mcp_post) {
+				if (a_T_mcpA_corr < a_missing_mcp_post) {
 					bdn.miss_T_mcpA = 1;
 					na_T_mcpA_missing++;
-					if (a_mcp_lo < corr.a_T_mcpB_corr + corr.a_T_mcpC_corr + corr.a_T_mcpD_corr) corr.a_T_mcpA_corr = corr.a_T_mcpB_corr*corr.a_T_mcpD_corr/corr.a_T_mcpC_corr;
+					if (a_mcp_lo < a_T_mcpB_corr + a_T_mcpC_corr + a_T_mcpD_corr) a_T_mcpA_corr = a_T_mcpB_corr*a_T_mcpD_corr/a_T_mcpC_corr;
 				}
-				if (corr.a_T_mcpB_corr < a_missing_mcp_post) {
+				if (a_T_mcpB_corr < a_missing_mcp_post) {
 					bdn.miss_T_mcpB = 1;
 					na_T_mcpB_missing++;
-					if (a_mcp_lo < corr.a_T_mcpA_corr + corr.a_T_mcpC_corr + corr.a_T_mcpD_corr) corr.a_T_mcpB_corr = corr.a_T_mcpA_corr*corr.a_T_mcpC_corr/corr.a_T_mcpD_corr;
+					if (a_mcp_lo < a_T_mcpA_corr + a_T_mcpC_corr + a_T_mcpD_corr) a_T_mcpB_corr = a_T_mcpA_corr*a_T_mcpC_corr/a_T_mcpD_corr;
 				}
-				if (corr.a_T_mcpC_corr < a_missing_mcp_post) {
+				if (a_T_mcpC_corr < a_missing_mcp_post) {
 					bdn.miss_T_mcpC = 1;
 					na_T_mcpC_missing++;
-					if (a_mcp_lo < corr.a_T_mcpA_corr + corr.a_T_mcpB_corr + corr.a_T_mcpD_corr) corr.a_T_mcpC_corr = corr.a_T_mcpB_corr*corr.a_T_mcpD_corr/corr.a_T_mcpA_corr;
+					if (a_mcp_lo < a_T_mcpA_corr + a_T_mcpB_corr + a_T_mcpD_corr) a_T_mcpC_corr = a_T_mcpB_corr*a_T_mcpD_corr/a_T_mcpA_corr;
 				}
-				if (corr.a_T_mcpD_corr < a_missing_mcp_post) {
+				if (a_T_mcpD_corr < a_missing_mcp_post) {
 					bdn.miss_T_mcpD = 1;
 					na_T_mcpD_missing++;
-					if (a_mcp_lo < corr.a_T_mcpA_corr + corr.a_T_mcpB_corr + corr.a_T_mcpC_corr) corr.a_T_mcpD_corr = corr.a_T_mcpA_corr*corr.a_T_mcpC_corr/corr.a_T_mcpB_corr;
+					if (a_mcp_lo < a_T_mcpA_corr + a_T_mcpB_corr + a_T_mcpC_corr) a_T_mcpD_corr = a_T_mcpA_corr*a_T_mcpC_corr/a_T_mcpB_corr;
 				}
-				/*
+				
 			// Fill tree with ADC data
 				bdn.a_R_ge			= a_R_ge;
 				bdn.a_R_ge_highE	= a_R_ge_highE;
@@ -1088,8 +1075,7 @@ int main(int argc, char *argv[]) {
 				bdn.a_R_mcpC		= a_R_mcpC;
 				bdn.a_R_mcpD		= a_R_mcpD;
 				bdn.a_R_mcpE		= a_R_mcpE;
-				*/
-				/*
+				
 			// Fill tree with TDC data
 				bdn.t_T_mcp			= t_T_mcp;
 				bdn.t_R_mcp			= t_R_mcp;
@@ -1102,7 +1088,6 @@ int main(int argc, char *argv[]) {
 				bdn.t_rf			= t_rf;
 				bdn.t_T_ge			= t_T_ge;
 				bdn.t_R_ge			= t_R_ge;
-				*/
 				
 			// Fill tree with Scaler data
 				bdn.s_ms_since_capt	= s_ms_since_capt;
@@ -1126,28 +1111,28 @@ int main(int argc, char *argv[]) {
 				bdn.rf_phase	= (stBDNCase.dRFFrequencyHz/1000000000)*(1710.0-t_rf-randgen->Rndm());
 				h_all_vs_rf_phase_observed->Fill(bdn.rf_phase);
 //				ht_rf_phase_observed->Fill(bdn.rf_phase);
-				bdn.a_B_dEsum	= bdn.a_B_dEa + bdn.a_B_dEb;
-				bdn.a_L_dEsum	= bdn.a_L_dEa + bdn.a_L_dEb;
-				bdn.t_B_dE		= 0.5*static_cast<double>(bdn.t_B_dEa + bdn.t_B_dEb);
-				bdn.t_L_dE		= 0.5*static_cast<double>(bdn.t_L_dEa + bdn.t_L_dEb);
-				bdn.a_T_mcpSum	= bdn.a_T_mcpA + bdn.a_T_mcpB + bdn.a_T_mcpC + bdn.a_T_mcpD;
+				bdn.a_B_dEsum	= a_B_dEa + a_B_dEb;
+				bdn.a_L_dEsum	= a_L_dEa + a_L_dEb;
+				bdn.t_B_dE		= 0.5*static_cast<double>(t_B_dEa + t_B_dEb);
+				bdn.t_L_dE		= 0.5*static_cast<double>(t_L_dEa + t_L_dEb);
+				bdn.a_T_mcpSum	= a_T_mcpA + a_T_mcpB + a_T_mcpC + a_T_mcpD;
 				ha_T_mcpSum		->Fill(bdn.a_T_mcpSum);
-				corr.a_T_mcpSum_corr = corr.a_T_mcpA_corr + corr.a_T_mcpB_corr + corr.a_T_mcpC_corr + corr.a_T_mcpD_corr;
-				ha_T_mcpSum_corr->Fill(corr.a_T_mcpSum_corr);
-				bdn.T_mcpX		= (corr.a_T_mcpC_corr + corr.a_T_mcpD_corr - corr.a_T_mcpA_corr - corr.a_T_mcpB_corr)/corr.a_T_mcpSum_corr;
-				bdn.T_mcpY		= (corr.a_T_mcpA_corr + corr.a_T_mcpD_corr - corr.a_T_mcpB_corr - corr.a_T_mcpC_corr)/corr.a_T_mcpSum_corr;
+				a_T_mcpSum_corr = a_T_mcpA_corr + a_T_mcpB_corr + a_T_mcpC_corr + a_T_mcpD_corr;
+				ha_T_mcpSum_corr->Fill(a_T_mcpSum_corr);
+				bdn.T_mcpX		= (a_T_mcpC_corr + a_T_mcpD_corr - a_T_mcpA_corr - a_T_mcpB_corr)/a_T_mcpSum_corr;
+				bdn.T_mcpY		= (a_T_mcpA_corr + a_T_mcpD_corr - a_T_mcpB_corr - a_T_mcpC_corr)/a_T_mcpSum_corr;
 				bdn.a_R_mcpSum	= a_R_mcpA + a_R_mcpB + a_R_mcpC + a_R_mcpD;
 				ha_R_mcpSum		->Fill(bdn.a_R_mcpSum);
-				corr.a_R_mcpSum_corr = corr.a_R_mcpA_corr + corr.a_R_mcpB_corr + corr.a_R_mcpC_corr + corr.a_R_mcpD_corr;
-				ha_R_mcpSum_corr->Fill(corr.a_R_mcpSum_corr);
-				bdn.R_mcpX		= (corr.a_R_mcpC_corr + corr.a_R_mcpD_corr - corr.a_R_mcpA_corr - corr.a_R_mcpB_corr)/corr.a_R_mcpSum_corr;
-				bdn.R_mcpY		= (corr.a_R_mcpA_corr + corr.a_R_mcpD_corr - corr.a_R_mcpB_corr - corr.a_R_mcpC_corr)/corr.a_R_mcpSum_corr;
+				a_R_mcpSum_corr = a_R_mcpA_corr + a_R_mcpB_corr + a_R_mcpC_corr + a_R_mcpD_corr;
+				ha_R_mcpSum_corr->Fill(a_R_mcpSum_corr);
+				bdn.R_mcpX		= (a_R_mcpC_corr + a_R_mcpD_corr - a_R_mcpA_corr - a_R_mcpB_corr)/a_R_mcpSum_corr;
+				bdn.R_mcpY		= (a_R_mcpA_corr + a_R_mcpD_corr - a_R_mcpB_corr - a_R_mcpC_corr)/a_R_mcpSum_corr;
 				bdn.event_good	=  event_good;
 				bdn.event 		=  n_trig;
 				bdn.run 		=  n_run;
 				
 		// MCP Maps -- Top
-				if (a_mcp_lo < corr.a_T_mcpSum_corr) {
+				if (a_mcp_lo < a_T_mcpSum_corr) {
 					h_T_mcpX->Fill(bdn.T_mcpX);
 					h_T_mcpY->Fill(bdn.T_mcpY);
 				// 3-post events
@@ -1207,7 +1192,7 @@ int main(int argc, char *argv[]) {
 					}
 				}
 		// MCP Maps -- Right
-				if (a_mcp_lo < corr.a_R_mcpSum_corr) {
+				if (a_mcp_lo < a_R_mcpSum_corr) {
 					h_R_mcpX->Fill(bdn.R_mcpX);
 					h_R_mcpY->Fill(bdn.R_mcpY);
 				// 3-post events
@@ -2470,7 +2455,7 @@ int main(int argc, char *argv[]) {
 	nt_all		= nt_B_dEa + nt_B_dEb + nt_B_E + nt_L_dEa + nt_L_dEb + nt_L_E + nt_R_mcp + nt_R_ge + nt_T_mcp + nt_T_ge;
 	
 //~~~~~~~~ Fill metadata (tree) ~~~~~~~~//
-
+	
 	metadata.n_run			= n_run;
 	metadata.n_trigs		= n_trig;
 	metadata.tot_trigs		= tot_trigs;
@@ -2491,7 +2476,7 @@ int main(int argc, char *argv[]) {
 	metadata.stop_sec		= stop_sec;
 	metadata.stop_time_sec	= stop_time_sec;
 	metadata.run_time_sec	= run_time_sec;
-	/*
+	
 	metadata.n_scaler_hits_B_dEa	= sTot_B_dEa;
 	metadata.n_scaler_hits_B_dEb	= sTot_B_dEb;
 	metadata.n_scaler_hits_B_E		= sTot_B_E;
@@ -2534,7 +2519,6 @@ int main(int argc, char *argv[]) {
 	metadata.n_adc_hits_T_mcpE		= na_T_mcpE;
 	metadata.n_adc_hits_T_ge		= na_T_ge;
 	metadata.n_adc_hits_T_ge_highE	= na_T_ge_highE;
-	*/
 	metadata.n_missing_adc_hits_R_mcpA	= na_R_mcpA_missing;
 	metadata.n_missing_adc_hits_R_mcpB	= na_R_mcpB_missing;
 	metadata.n_missing_adc_hits_R_mcpC	= na_R_mcpC_missing;
@@ -2729,24 +2713,24 @@ int main(int argc, char *argv[]) {
 	printf("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 	printf("\n                 Scaler     TDC     ADC");
 	printf("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-	printf("\nBottom dEa   : %8.2f%8.2f%8.2f", sTot_B_dEa	/ (float)sync_time_sec, nt_B_dEa	/ (float)run_time_sec, metadata.n_adc_hits_B_dEa	/ (float)run_time_sec);
-	printf("\nBottom dEb   : %8.2f%8.2f%8.2f", sTot_B_dEb	/ (float)sync_time_sec, nt_B_dEb	/ (float)run_time_sec, metadata.n_adc_hits_B_dEb	/ (float)run_time_sec);
-	printf("\nBottom E     : %8.2f%8.2f%8.2f", sTot_B_E		/ (float)sync_time_sec, nt_B_E		/ (float)run_time_sec, metadata.n_adc_hits_B_E	/ (float)run_time_sec);
-	printf("\nLeft   dEa   : %8.2f%8.2f%8.2f", sTot_L_dEa	/ (float)sync_time_sec, nt_L_dEa	/ (float)run_time_sec, metadata.n_adc_hits_L_dEa	/ (float)run_time_sec);
-	printf("\nLeft   dEb   : %8.2f%8.2f%8.2f", sTot_L_dEb	/ (float)sync_time_sec, nt_L_dEb	/ (float)run_time_sec, metadata.n_adc_hits_L_dEb	/ (float)run_time_sec);
-	printf("\nLeft   E     : %8.2f%8.2f%8.2f", sTot_L_E		/ (float)sync_time_sec, nt_L_E		/ (float)run_time_sec, metadata.n_adc_hits_L_E	/ (float)run_time_sec);
-	printf("\nRight  Ge    : %8.2f%8.2f%8.2f", sTot_R_ge	/ (float)sync_time_sec, nt_R_ge		/ (float)run_time_sec, metadata.n_adc_hits_R_ge	/ (float)run_time_sec);
-	printf("\nTop    Ge    : %8.2f%8.2f%8.2f", sTot_T_ge	/ (float)sync_time_sec, nt_T_ge		/ (float)run_time_sec, metadata.n_adc_hits_T_ge	/ (float)run_time_sec);
+	printf("\nBottom dEa   : %8.2f%8.2f%8.2f", sTot_B_dEa	/ (float)sync_time_sec, nt_B_dEa	/ (float)run_time_sec, na_B_dEa	/ (float)run_time_sec);
+	printf("\nBottom dEb   : %8.2f%8.2f%8.2f", sTot_B_dEb	/ (float)sync_time_sec, nt_B_dEb	/ (float)run_time_sec, na_B_dEb	/ (float)run_time_sec);
+	printf("\nBottom E     : %8.2f%8.2f%8.2f", sTot_B_E		/ (float)sync_time_sec, nt_B_E		/ (float)run_time_sec, na_B_E	/ (float)run_time_sec);
+	printf("\nLeft   dEa   : %8.2f%8.2f%8.2f", sTot_L_dEa	/ (float)sync_time_sec, nt_L_dEa	/ (float)run_time_sec, na_L_dEa	/ (float)run_time_sec);
+	printf("\nLeft   dEb   : %8.2f%8.2f%8.2f", sTot_L_dEb	/ (float)sync_time_sec, nt_L_dEb	/ (float)run_time_sec, na_L_dEb	/ (float)run_time_sec);
+	printf("\nLeft   E     : %8.2f%8.2f%8.2f", sTot_L_E		/ (float)sync_time_sec, nt_L_E		/ (float)run_time_sec, na_L_E	/ (float)run_time_sec);
+	printf("\nRight  Ge    : %8.2f%8.2f%8.2f", sTot_R_ge	/ (float)sync_time_sec, nt_R_ge		/ (float)run_time_sec, na_R_ge	/ (float)run_time_sec);
+	printf("\nTop    Ge    : %8.2f%8.2f%8.2f", sTot_T_ge	/ (float)sync_time_sec, nt_T_ge		/ (float)run_time_sec, na_T_ge	/ (float)run_time_sec);
 	printf("\nRight  MCP   : %8.2f%8.2f"	 , sTot_R_mcp	/ (float)sync_time_sec, nt_R_mcp	/ (float)run_time_sec);
-	printf("\nRight  MCP A :                 %8.2f", metadata.n_adc_hits_R_mcpA	/ (float)run_time_sec);
-	printf("\nRight  MCP B :                 %8.2f", metadata.n_adc_hits_R_mcpB	/ (float)run_time_sec);
-	printf("\nRight  MCP C :                 %8.2f", metadata.n_adc_hits_R_mcpC	/ (float)run_time_sec);
-	printf("\nRight  MCP D :                 %8.2f", metadata.n_adc_hits_R_mcpD	/ (float)run_time_sec);
+	printf("\nRight  MCP A :                 %8.2f", na_R_mcpA	/ (float)run_time_sec);
+	printf("\nRight  MCP B :                 %8.2f", na_R_mcpB	/ (float)run_time_sec);
+	printf("\nRight  MCP C :                 %8.2f", na_R_mcpC	/ (float)run_time_sec);
+	printf("\nRight  MCP D :                 %8.2f", na_R_mcpD	/ (float)run_time_sec);
 	printf("\nTop    MCP   : %8.2f%8.2f"	 , sTot_T_mcp	/ (float)sync_time_sec, nt_T_mcp	/ (float)run_time_sec);
-	printf("\nTop    MCP A :                 %8.2f", metadata.n_adc_hits_T_mcpA	/ (float)run_time_sec);
-	printf("\nTop    MCP B :                 %8.2f", metadata.n_adc_hits_T_mcpB	/ (float)run_time_sec);
-	printf("\nTop    MCP C :                 %8.2f", metadata.n_adc_hits_T_mcpC	/ (float)run_time_sec);
-	printf("\nTop    MCP D :                 %8.2f", metadata.n_adc_hits_T_mcpD	/ (float)run_time_sec);
+	printf("\nTop    MCP A :                 %8.2f", na_T_mcpA	/ (float)run_time_sec);
+	printf("\nTop    MCP B :                 %8.2f", na_T_mcpB	/ (float)run_time_sec);
+	printf("\nTop    MCP C :                 %8.2f", na_T_mcpC	/ (float)run_time_sec);
+	printf("\nTop    MCP D :                 %8.2f", na_T_mcpD	/ (float)run_time_sec);
 	printf("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 	printf("\nSums         : %8.2f%8.2f"	 , sTot_all		/ (float)sync_time_sec, nt_all		/ (float)run_time_sec);
 	printf("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
@@ -2825,25 +2809,25 @@ int countbit(int x) {
 	return n;
 }
 
-int ReadADC1(int **p,int n_trig, int *event_good,int *n_bad_events) {
+int ReadADC1(int *p,int n_trig, int *event_good,int *n_bad_events) {
 // ADC1 *******************************
 	int x, adc_ch, wordc;
-	if (int(*(*p)) != 0xadc1adc1) {
+	if (**p != 0xadc1adc1) {
 		cout << "trig #" << n_trig << ", ADC1 marker not found where expected!" << endl;
 		(*event_good) = 0;
 		(*n_bad_events)++;
 		return -1;
 	}
 	(*p)++; // move to ADC1 hit register
-	x = int(int(*(*p)) & 0xffff ); // hit register, tells which channels were hit
+	x = int(**p & 0xffff ); // hit register, tells which channels were hit
 	wordc = countbit(x);
 	
-	for (int j=1; j<=wordc; j++) { // Loop over all ADC channels which have hits
+	for (j=1; j<=wordc; j++) { // Loop over all ADC channels which have hits
 		(*p)++;  // Increment pointer p to ADC channel with a hit
-		x = int((*(*p)) & 0x0fff);
+		x = int(**p & 0x0fff);
 	
 		// Get ADC channel of that hit then associate it with the data:
-		adc_ch=int((*(*p)) & 0xf000);
+		adc_ch=int(**p & 0xf000);
 		adc_ch=(adc_ch>>12)+1;
 		//if (adc_ch == 1) {
 		//	a_R_ge = x;
@@ -2854,51 +2838,52 @@ int ReadADC1(int **p,int n_trig, int *event_good,int *n_bad_events) {
 		case 1:
 			bdn.a_T_mcpE = x;
 			ha_T_mcpE->Fill(x);
-			ha_T_mcpE_corr->Fill(x - ped_T_mcpE + randgen->Rndm());
-			metadata.n_adc_hits_T_mcpE++;
+			bdn.a_T_mcpE_corr = x - ped_T_mcpE + randgen->Rndm();
+			ha_T_mcpE_corr->Fill(a_T_mcpE_corr);
+			metafile.na_T_mcpE++;
 		break;
 		case 2: 
 			bdn.a_B_dEa = x;
 			ha_B_dEa->Fill(x);
-			metadata.n_adc_hits_B_dEa++;
+			metafile.na_B_dEa++;
 		break;
 		case 3:
 			bdn.a_B_dEb = x;
 			ha_B_dEb->Fill(x);
-			metadata.n_adc_hits_B_dEb++;
+			metafile.na_B_dEb++;
 		break;
 		case 4: 
 			bdn.a_B_E = x;
 			ha_B_E->Fill(x);
-			metadata.n_adc_hits_B_E++;
+			metafile.na_B_E++;
 		break;
 		case 5:
 			bdn.a_T_mcpA = x;
 			ha_T_mcpA->Fill(x);
-			corr.a_T_mcpA_corr= x - ped_T_mcpA + randgen->Rndm();
-			ha_T_mcpA_corr->Fill(corr.a_T_mcpA_corr);
-			metadata.n_adc_hits_T_mcpA++;
+			bdn.a_T_mcpA_corr = x - ped_T_mcpA + randgen->Rndm();
+			ha_T_mcpA_corr->Fill(a_T_mcpA_corr);
+			metafile.na_T_mcpA++;
 		break;
 		case 6:
 			bdn.a_T_mcpB = x;
 			ha_T_mcpB->Fill(x);
-			corr.a_T_mcpB_corr= x - ped_T_mcpB + randgen->Rndm();
-			ha_T_mcpB_corr->Fill(corr.a_T_mcpB_corr);
-			metadata.n_adc_hits_T_mcpB++;
+			bdn.a_T_mcpB_corr = x - ped_T_mcpB + randgen->Rndm();
+			ha_T_mcpB_corr->Fill(a_T_mcpB_corr);
+			metafile.na_T_mcpB++;
 		break;
 		case 7:
 			bdn.a_T_mcpC = x;
 			ha_T_mcpC->Fill(x);
-			corr.a_T_mcpC_corr= x - ped_T_mcpC + randgen->Rndm();
-			ha_T_mcpC_corr->Fill(corr.a_T_mcpC_corr);
-			metadata.n_adc_hits_T_mcpC++;
+			bdn.a_T_mcpC_corr = x - ped_T_mcpC + randgen->Rndm();
+			ha_T_mcpC_corr->Fill(a_T_mcpC_corr);
+			metafile.na_T_mcpC++;
 		break;
 		case 8:
 			bdn.a_T_mcpD = x;
 			ha_T_mcpD->Fill(x);
-			corr.a_T_mcpD_corr= x - ped_T_mcpD + randgen->Rndm();
-			ha_T_mcpD_corr->Fill(corr.a_T_mcpD_corr);
-			metadata.n_adc_hits_T_mcpD++;
+			bdn.a_T_mcpD_corr = x - ped_T_mcpD + randgen->Rndm();
+			ha_T_mcpD_corr->Fill(a_T_mcpD_corr);
+			metafile.na_T_mcpD++;
 		break;
 		//if (adc_ch == 9) {
 		//	a_T_ge = x;
@@ -2908,319 +2893,56 @@ int ReadADC1(int **p,int n_trig, int *event_good,int *n_bad_events) {
 		case 9:
 			bdn.a_R_mcpE = x;
 			ha_R_mcpE->Fill(x);
-			corr.a_R_mcpE_corr= x - ped_R_mcpE + randgen->Rndm();
-			ha_R_mcpE_corr->Fill(corr.a_R_mcpE_corr);
-			metadata.n_adc_hits_R_mcpE++;
+			bdn.a_R_mcpE_corr = x - ped_R_mcpE + randgen->Rndm();
+			ha_R_mcpE_corr->Fill(a_R_mcpE_corr);
+			metafile.na_R_mcpE++;
 		break;
 		case 10:
 			bdn.a_L_dEa = x;
 			ha_L_dEa->Fill(x);
-			metadata.n_adc_hits_L_dEa++;
+			metafile.na_L_dEa++;
 		break;
 		case 11:
 			bdn.a_L_dEb = x;
 			ha_L_dEb->Fill(x);
-			metadata.n_adc_hits_L_dEb++;
+			metafile.na_L_dEb++;
 		break;
 		case 12:
 			bdn.a_L_E = x;
 			ha_L_E->Fill(x);
-			metadata.n_adc_hits_L_E++;
+			metafile.na_L_E++;
 		break;
 		case 13:
 			bdn.a_R_mcpA = x;
 			ha_R_mcpA->Fill(x);
-			corr.a_R_mcpA_corr= x - ped_R_mcpA + randgen->Rndm();
-			ha_R_mcpA_corr->Fill(corr.a_R_mcpA_corr);
-			metadata.n_adc_hits_R_mcpA++;
+			bdn.a_R_mcpA_corr = x - ped_R_mcpA + randgen->Rndm();
+			ha_R_mcpA_corr->Fill(a_R_mcpA_corr);
+			metafile.na_R_mcpA++;
 		break;
 		case 14:
 			bdn.a_R_mcpB = x;
 			ha_R_mcpB->Fill(x);
-			corr.a_R_mcpB_corr= x - ped_R_mcpB + randgen->Rndm();
-			ha_R_mcpB_corr->Fill(corr.a_R_mcpB_corr);
-			metadata.n_adc_hits_R_mcpB++;
+			bdn.a_R_mcpB_corr = x - ped_R_mcpB + randgen->Rndm();
+			ha_R_mcpB_corr->Fill(a_R_mcpB_corr);
+			metafile.na_R_mcpB++;
 		break;
 		case 15:
 			bdn.a_R_mcpC = x;
 			ha_R_mcpC->Fill(x);
-			corr.a_R_mcpC_corr= x - ped_R_mcpC + randgen->Rndm();
-			ha_R_mcpC_corr->Fill(corr.a_R_mcpC_corr);
-			metadata.n_adc_hits_R_mcpC++;
+			bdn.a_R_mcpC_corr = x - ped_R_mcpC + randgen->Rndm();
+			ha_R_mcpC_corr->Fill(a_R_mcpC_corr);
+			metafile.na_R_mcpC++;
 		break;
 		case 16:
 			bdn.a_R_mcpD = x;
 			ha_R_mcpD->Fill(x);
-			corr.a_R_mcpD_corr= x - ped_R_mcpD + randgen->Rndm();
-			ha_R_mcpD_corr->Fill(corr.a_R_mcpD_corr);
-			metadata.n_adc_hits_R_mcpD++;
+			bdn.a_R_mcpD_corr = x - ped_R_mcpD + randgen->Rndm();
+			ha_R_mcpD_corr->Fill(a_R_mcpD_corr);
+			metafile.na_R_mcpD++;
 		break;
 		default:
-		break;
 		}
 	} // for (wordc)
-	return 0;
-}
-
-
-int ReadADC2(int **p,int n_trig, int *event_good,int *n_bad_events) {
-// ADC1 *******************************
-	int x,y, adc_ch, wordc;
-	if (int(*(*p)) != 0xadc2adc2) {
-		cout << "trig #" << n_trig << ", ADC2 marker not found where expected!" << endl;
-		(*event_good) = 0;
-		(*n_bad_events)++;
-		return -1;
-	}
-	(*p)++; // move to ADC1 hit register
-	x = int(int(*(*p)) & 0xffff ); // hit register, tells which channels were hit
-	wordc = countbit(x);
-	
-	for (int j=1; j<=wordc; j++) { // Loop over all ADC channels which have hits
-		(*p)++;  // Increment pointer p to ADC channel with a hit
-		x = int((*(*p)) & 0x0fff);
-	
-		// Get ADC channel of that hit then associate it with the data:
-		adc_ch=int((*(*p)) & 0xf000);
-		adc_ch=(adc_ch>>12)+1;
-		//if (adc_ch == 1) {
-		//	a_R_ge = x;
-		//	ha_R_ge->Fill(x);
-		//	na_R_ge++;
-		//}
-		switch(adc_ch) {
-		case 1:
-			y = x + randgen->Rndm();
-			bdn.a_T_ge_highE = x;
-			ha_T_ge_highE->Fill(T_ge_highE_coeff[0] + y*T_ge_highE_coeff[1] + y*y*T_ge_highE_coeff[2]);
-			//he_T_ge_highE->Fill(e_T_ge_highE);
-			//he_ge_highE	 ->Fill(e_T_ge_highE);
-			metadata.n_adc_hits_T_ge_highE++;
-		break;
-		case 2: 
-			y = x + randgen->Rndm();
-			bdn.a_R_ge_highE = x;
-			ha_R_ge_highE->Fill(R_ge_highE_coeff[0] + y*R_ge_highE_coeff[1] + y*y*R_ge_highE_coeff[2]);
-			//he_T_ge_highE->Fill(e_T_ge_highE);
-			//he_ge_highE	 ->Fill(e_T_ge_highE);
-			metadata.n_adc_hits_R_ge_highE++;
-		break;
-		case 7:
-			y = x + randgen->Rndm();
-			bdn.a_T_ge = x;
-			ha_T_ge->Fill(T_ge_coeff[0] + y*T_ge_coeff[1] + y*y*T_ge_coeff[2]);
-			//he_T_ge_highE->Fill(e_T_ge_highE);
-			//he_ge_highE	 ->Fill(e_T_ge_highE);
-			metadata.n_adc_hits_T_ge++;
-		break;
-		case 8:
-			y = x + randgen->Rndm();
-			bdn.a_R_ge = x;
-			ha_R_ge->Fill(R_ge_coeff[0] + y*R_ge_coeff[1] + y*y*R_ge_coeff[2]);
-			//he_T_ge_highE->Fill(e_T_ge_highE);
-			//he_ge_highE	 ->Fill(e_T_ge_highE);
-			metadata.n_adc_hits_R_ge++;
-		break;
-		//if (adc_ch == 9) {
-		//	a_T_ge = x;
-		//	ha_T_ge->Fill(x);
-		//	na_T_ge++;
-		//}
-		case 9:
-			y = x + randgen->Rndm();
-			bdn.a_T_ge = x;
-			ha_T_ge->Fill(T_ge_coeff[0] + y*T_ge_coeff[1] + y*y*T_ge_coeff[2]);
-			//he_T_ge_highE->Fill(e_T_ge_highE);
-			//he_ge_highE	 ->Fill(e_T_ge_highE);
-			metadata.n_adc_hits_T_ge++;
-		break;
-		default:
-		break;
-		}
-	} // for (wordc)
-	return 0;
-}
-
-int ReadTDC1(int **p, int n_trig, int *event_good, int *n_bad_events){
-	int x, tdc_ch;
-	(*p)++;
-	if(**p != 0x2dc12dc1) {
-		cout << "trig #" << n_trig << ", TDC1 marker not found where expected!" << endl;
-		(*event_good) = 0;
-		(*n_bad_events)++;
-		return -1;
-	}
-	(*p)++;
-	while(**p != 0x2dc22dc2) {
-		tdc_ch=**p;
-		(*p)++;
-		x = int(**p & 0x00ffffff); // take only the 24-bit data word
-		if (x & 0x0080000) x -= 0x00ffffff; // test for neg value
-			// if neg then you need to shift because the leading 1 in 24-bit
-			// is not leading in 32-bit; the shift is by "-0x00ffffff"
-		switch(tdc_ch) {
-		case 1:
-			bdn.t_T_mcp = x;
-			ht_T_mcp->Fill(x);
-			metadata.n_tdc_hits_T_mcp++;
-		break;
-		case 2:
-			bdn.t_R_mcp = x;
-			ht_R_mcp->Fill(x);
-			metadata.n_tdc_hits_R_mcp++;
-		break;
-		case 3:
-			bdn.t_B_dEa = x;
-			ht_B_dEa->Fill(x);
-			metadata.n_tdc_hits_B_dEa++;
-		break;
-		case 4:
-			bdn.t_B_dEb = x;
-			ht_B_dEb->Fill(x);
-			metadata.n_tdc_hits_B_dEb++;
-		break;
-		case 5:
-			bdn.t_B_E = x;
-			ht_B_E->Fill(x);
-			metadata.n_tdc_hits_B_E++;
-		break;
-		case 6:
-			bdn.t_L_dEa = x;
-			ht_L_dEa->Fill(x);
-			metadata.n_tdc_hits_L_dEa++;
-		break;
-		case 7:
-			bdn.t_L_dEb = x;
-			ht_L_dEb->Fill(x);
-			metadata.n_tdc_hits_L_dEb++;
-		break;
-		case 8:
-			bdn.t_L_E = x;
-			ht_L_E->Fill(x);
-			metadata.n_tdc_hits_L_E++;
-		break;
-		default:
-		break;
-		}
-	}
-}
-
-int ReadTDC2(int **p, int n_trig, int *event_good, int *n_bad_events){
-	int x, tdc_ch;
-	if(**p != 0x2dc22dc2) {
-		cout << "trig #" << n_trig << ", TDC2 marker not found where expected!" << endl;
-		(*event_good) = 0;
-		(*n_bad_events)++;
-		return -1;
-	}
-	(*p)++;
-	while(**p != 0x100cca1e) {
-		tdc_ch=**p;
-		(*p)++;
-		x = int(**p & 0x00ffffff); // take only the 24-bit data word
-		if (x & 0x0080000) x -= 0x00ffffff; // test for neg value
-			// if neg then you need to shift because the leading 1 in 24-bit
-			// is not leading in 32-bit; the shift is by "-0x00ffffff"
-		switch(tdc_ch) {
-		case 1:
-			bdn.t_rf = x;
-			ht_rf->Fill(x);
-		break;
-		case 2:
-			bdn.t_T_ge = x;
-			ht_T_ge->Fill(x);
-			metadata.n_tdc_hits_T_ge++;
-		break;
-		case 3:
-			bdn.t_R_ge = x;
-			ht_R_ge->Fill(x);
-			metadata.n_tdc_hits_R_ge++;
-		break;
-		default:
-		break;
-		}
-	}
-}
-
-int ReadScalers(int **p, int n_trig, int n_run,int *all_trigs,int *s_liveTime_us,long int *s_runTime, int *event_good, int *n_bad_events){
-	if (n_run < 1201) { // old scaler readout
-	// Capt Scaler ************************
-		if (**p != 0x100cca1e) {
-			cout << "trig #" << n_trig << ", Capt Scaler marker not found where expected!" << endl;
-			event_good = 0;
-			n_bad_events++;
-			return -1;
-		}
-		(*p)++; // p is at time since capture in ms
-		bdn.s_ms_since_capt = int(**p & 0xffffff);
-		(*p)++; // p is at trap state | 0 = trap full, 1 = trap empty
-		bdn.s_capt_state = int(**p & 0xffffff);
-		(*p)++; // move pointer to eject scaler
-		
-	// Eject Scaler ***********************
-		if (**p != 0x100eca1e) {
-			cout << "trig #" << n_trig << ", Eject Scaler marker not found where expected!" << endl;
-			event_good = 0;
-			n_bad_events++;
-			return -1;
-		}
-		(*p)++; //p is at time since eject in ms
-		bdn.s_ms_since_eject = int(**p & 0xffffff);
-		(*p)++; //p is at # of capt since last eject
-		bdn.s_capt = int(**p & 0xffffff);
-		(*p)++; //p is at # of SiX4 hits since last eject
-		bdn.s_SiX4 = int(**p & 0xffffff);
-
-	} // end old scaler readout
-
-	else {	// new scaler readout
-
-	// Live Time Scaler ***********************
-		if (**p != 0x100cca1e) {
-			cout << "trig #" << n_trig << ", Livetime Scaler marker not found where expected!" << endl;
-			event_good = 0;
-			n_bad_events++;
-			return -1;
-		}
-		
-		(*p)++; // p is..  this is a bit iffy
-		*s_liveTime_us = int(**p & 0xffffff);
-		(*p)++;
-		(*all_trigs) = int(**p & 0xffffff);
-		(*p)++;
-		*s_runTime = int(**p & 0xffffff);
-		//*p++; //p is at # of SiX4 hits since last eject
-		//s_SiX4 = int(*p & 0xffffff);
-		
-		(*p)++; //this also iffy, check if it works?
-	// Capt Scaler ************************
-		if (**p != 0x100dca1e) {
-			cout << "trig #" << n_trig << ", Capt Scaler marker not found where expected!" << endl;
-			event_good = 0;
-			n_bad_events++;
-			return -1;
-		}
-		(*p)++; // p is at time since capture in ms
-		bdn.s_ms_since_capt = int(**p & 0xffffff);
-		(*p)++; // p is at trap state | 0 = trap full, 1 = trap empty
-		bdn.s_capt_state = int(**p & 0xffffff);
-		(*p)++; // move pointer to eject scaler
-		
-	// Eject Scaler ***********************
-		if (**p != 0x100eca1e) {
-			cout << "trig #" << n_trig << ", Eject Scaler marker not found where expected!" << endl;
-			event_good = 0;
-			n_bad_events++;
-			return -1;
-		}
-		(*p)++; //p is at time since eject in ms
-		bdn.s_ms_since_eject = int(**p & 0xffffff);
-		(*p)++; //p is at # of capt since last eject
-		bdn.s_capt = int(**p & 0xffffff);
-		//*p++; //p is at # of SiX4 hits since last eject
-		//s_SiX4 = int(*p & 0xffffff);
-		
-	} // end new scaler readout
 	return 0;
 }
 /*
