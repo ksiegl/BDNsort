@@ -3056,10 +3056,10 @@ int ReadTDC1(int **p, int n_trig, int *event_good, int *n_bad_events){
 	(*p)++;
 	while((*(*p)) != 0x2dc22dc2) {
 		tdc_ch=(*(*p));
-		cout<< "TDC1 channel" << tdc_ch <<endl;
+		if(tdc_ch!=0)	cout<< "TDC1 channel" << tdc_ch <<endl;
 		(*p)++;
 		x = int((*(*p)) & 0x00ffffff); // take only the 24-bit data word
-		cout<< "TDC1 value" << x <<endl;
+		//cout<< "TDC1 value" << x <<endl;
 		(*p)++;
 		if (x & 0x0080000) x -= 0x00ffffff; // test for neg value
 			// if neg then you need to shift because the leading 1 in 24-bit
