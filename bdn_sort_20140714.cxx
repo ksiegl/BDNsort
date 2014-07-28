@@ -2838,9 +2838,9 @@ int ReadADC1(int **p,int n_trig, int *event_good,int *n_bad_events) {
 	x = int(int(*(*p)) & 0xffff ); // hit register, tells which channels were hit
 	wordc = countbit(x);
 	for (int j=1; j<=wordc; j++) { // Loop over all ADC channels which have hits
-		(*p)++;  // Increment pointer p to ADC channel with a hit
 		if(int((*(*p))) == 0xadc2adc2)
 			cout<<"adc2 found at channel "<<j<<endl;
+		(*p)++;  // Increment pointer p to ADC channel with a hit
 		x = int((*(*p)) & 0x0fff);
 	
 		// Get ADC channel of that hit then associate it with the data:
