@@ -3055,6 +3055,7 @@ int ReadTDC1(int **p, int n_trig, int *event_good, int *n_bad_events){
 	(*p)++;
 	while((*(*p)) != 0x2dc22dc2) {
 		tdc_ch=(*(*p));
+		cout<< "TDC1 channel" << (*(*p)) <<endl;
 		(*p)++;
 		cout<< "TDC1 value" << (*(*p)) <<endl;
 		x = int((*(*p)) & 0x00ffffff); // take only the 24-bit data word
