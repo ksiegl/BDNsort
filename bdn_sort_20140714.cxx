@@ -2839,6 +2839,8 @@ int ReadADC1(int **p,int n_trig, int *event_good,int *n_bad_events) {
 	wordc = countbit(x);
 	for (int j=1; j<=wordc; j++) { // Loop over all ADC channels which have hits
 		(*p)++;  // Increment pointer p to ADC channel with a hit
+		if(int((*(*p))) == 0xadc2adc2)
+			cout<<"adc2 found at channel "<<j<<endl;
 		x = int((*(*p)) & 0x0fff);
 	
 		// Get ADC channel of that hit then associate it with the data:
@@ -2967,7 +2969,7 @@ int ReadADC2(int **p,int n_trig, int *event_good,int *n_bad_events) {
 	int x,y, adc_ch, wordc;
 	if (int(*(*p)) != 0xadc2adc2) {
 		cout << "trig #" << n_trig << ", ADC2 marker not found where expected!" << endl;
-		printf("%x\n",adc_ch);
+		printf("%x\n",int(*(*p)));
 		(*event_good) = 0;
 		(*n_bad_events)++;
 		return -1;
