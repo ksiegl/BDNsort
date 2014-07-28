@@ -3054,6 +3054,7 @@ int ReadTDC1(int **p, int n_trig, int *event_good, int *n_bad_events){
 		return -1;
 	}
 	(*p)++;
+	printf("TDC1 first 0x%x\n",(*(*p)));
 	while((*(*p)) != 0x2dc22dc2) {
 		tdc_ch=(*(*p));
 		if(tdc_ch!=0)	printf("TDC1 channel 0x%x\n",tdc_ch);
