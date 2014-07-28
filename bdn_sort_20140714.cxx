@@ -3046,7 +3046,7 @@ int ReadADC2(int **p,int n_trig, int *event_good,int *n_bad_events) {
 int ReadTDC1(int **p, int n_trig, int *event_good, int *n_bad_events){
 	int x, tdc_ch;
 	(*p)++;
-	printf("TDC1 code %x\n",(*(*p)));
+	//printf("TDC1 code %x\n",(*(*p)));
 	if((*(*p)) != 0x2dc12dc1) {
 		cout << "trig #" << n_trig << ", TDC1 marker not found where expected!" << endl;
 		(*event_good) = 0;
@@ -3054,13 +3054,13 @@ int ReadTDC1(int **p, int n_trig, int *event_good, int *n_bad_events){
 		return -1;
 	}
 	(*p)++;
-	printf("TDC1 first 0x%x\n",(*(*p)));
+	//printf("TDC1 first 0x%x\n",(*(*p)));
 	while((*(*p)) != 0x2dc22dc2) {
 		tdc_ch=(*(*p));
-		if(tdc_ch!=0)	printf("TDC1 channel 0x%x\n",tdc_ch);
+		//if(tdc_ch!=0)	printf("TDC1 channel 0x%x\n",tdc_ch);
 		(*p)++;
 		x = int((*(*p)) & 0x00ffffff); // take only the 24-bit data word
-		if((*(*p))!=0)	printf("TDC1 value 0x%x\n",(*(*p)));
+		//if((*(*p))!=0)	printf("TDC1 value 0x%x\n",(*(*p)));
 		//cout<< "TDC1 value" << x <<endl;
 		(*p)++;
 		if (x & 0x0080000) x -= 0x00ffffff; // test for neg value
