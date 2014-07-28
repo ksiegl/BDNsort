@@ -3046,17 +3046,17 @@ int ReadADC2(int **p,int n_trig, int *event_good,int *n_bad_events) {
 int ReadTDC1(int **p, int n_trig, int *event_good, int *n_bad_events){
 	int x, tdc_ch;
 	(*p)++;
-	if(**p != 0x2dc12dc1) {
+	if(p** != 0x2dc12dc1) {
 		cout << "trig #" << n_trig << ", TDC1 marker not found where expected!" << endl;
 		(*event_good) = 0;
 		(*n_bad_events)++;
 		return -1;
 	}
 	(*p)++;
-	while(**p != 0x2dc22dc2) {
-		tdc_ch=**p;
+	while(p** != 0x2dc22dc2) {
+		tdc_ch=p**;
 		(*p)++;
-		x = int(**p & 0x00ffffff); // take only the 24-bit data word
+		x = int(p** & 0x00ffffff); // take only the 24-bit data word
 		if (x & 0x0080000) x -= 0x00ffffff; // test for neg value
 			// if neg then you need to shift because the leading 1 in 24-bit
 			// is not leading in 32-bit; the shift is by "-0x00ffffff"
@@ -3109,17 +3109,17 @@ int ReadTDC1(int **p, int n_trig, int *event_good, int *n_bad_events){
 
 int ReadTDC2(int **p, int n_trig, int *event_good, int *n_bad_events){
 	int x, tdc_ch;
-	if(**p != 0x2dc22dc2) {
+	if(p** != 0x2dc22dc2) {
 		cout << "trig #" << n_trig << ", TDC2 marker not found where expected!" << endl;
 		(*event_good) = 0;
 		(*n_bad_events)++;
 		return -1;
 	}
 	(*p)++;
-	while(**p != 0x100cca1e) {
-		tdc_ch=**p;
+	while(p** != 0x100cca1e) {
+		tdc_ch=p**;
 		(*p)++;
-		x = int(**p & 0x00ffffff); // take only the 24-bit data word
+		x = int(p** & 0x00ffffff); // take only the 24-bit data word
 		if (x & 0x0080000) x -= 0x00ffffff; // test for neg value
 			// if neg then you need to shift because the leading 1 in 24-bit
 			// is not leading in 32-bit; the shift is by "-0x00ffffff"
@@ -3147,16 +3147,16 @@ int ReadTDC2(int **p, int n_trig, int *event_good, int *n_bad_events){
 int ReadScalers(int **p, int n_trig, int n_run,int *all_trigs,int *s_liveTime_us,long int *s_runTime, int *event_good, int *n_bad_events){
 	if (n_run < 1201) { // old scaler readout
 	// Capt Scaler ************************
-		if (**p != 0x100cca1e) {
+		if ((*(*p)) != 0x100cca1e) {
 			cout << "trig #" << n_trig << ", Capt Scaler marker not found where expected!" << endl;
 			event_good = 0;
 			n_bad_events++;
 			return -1;
 		}
 		(*p)++; // p is at time since capture in ms
-		bdn.s_ms_since_capt = int(**p & 0xffffff);
+		bdn.s_ms_since_capt = int((*(*p)) & 0xffffff);
 		(*p)++; // p is at trap state | 0 = trap full, 1 = trap empty
-		bdn.s_capt_state = int(**p & 0xffffff);
+		bdn.s_capt_state = int(p** & 0xffffff);
 		(*p)++; // move pointer to eject scaler
 		
 	// Eject Scaler ***********************
