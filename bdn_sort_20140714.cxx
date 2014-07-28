@@ -2838,7 +2838,7 @@ int ReadADC1(int **p,int n_trig, int *event_good,int *n_bad_events) {
 	x = int(int(*(*p)) & 0xffff ); // hit register, tells which channels were hit
 	wordc = countbit(x);
 	for (int j=1; j<=wordc; j++) { // Loop over all ADC channels which have hits
-		if(int(p**) == 0xadc2adc2)
+		if( int((*(*p))) == 0xadc2adc2)
 			cout<<"adc2 found at channel "<<j<<endl;
 		(*p)++;  // Increment pointer p to ADC channel with a hit
 		x = int((*(*p)) & 0x0fff);
@@ -3046,17 +3046,17 @@ int ReadADC2(int **p,int n_trig, int *event_good,int *n_bad_events) {
 int ReadTDC1(int **p, int n_trig, int *event_good, int *n_bad_events){
 	int x, tdc_ch;
 	(*p)++;
-	if(p** != 0x2dc12dc1) {
+	if((*(*p)) != 0x2dc12dc1) {
 		cout << "trig #" << n_trig << ", TDC1 marker not found where expected!" << endl;
 		(*event_good) = 0;
 		(*n_bad_events)++;
 		return -1;
 	}
 	(*p)++;
-	while(p** != 0x2dc22dc2) {
-		tdc_ch=p**;
+	while((*(*p)) != 0x2dc22dc2) {
+		tdc_ch=(*(*p));
 		(*p)++;
-		x = int(p** & 0x00ffffff); // take only the 24-bit data word
+		x = int((*(*p)) & 0x00ffffff); // take only the 24-bit data word
 		if (x & 0x0080000) x -= 0x00ffffff; // test for neg value
 			// if neg then you need to shift because the leading 1 in 24-bit
 			// is not leading in 32-bit; the shift is by "-0x00ffffff"
@@ -3109,17 +3109,17 @@ int ReadTDC1(int **p, int n_trig, int *event_good, int *n_bad_events){
 
 int ReadTDC2(int **p, int n_trig, int *event_good, int *n_bad_events){
 	int x, tdc_ch;
-	if(p** != 0x2dc22dc2) {
+	if((*(*p)) != 0x2dc22dc2) {
 		cout << "trig #" << n_trig << ", TDC2 marker not found where expected!" << endl;
 		(*event_good) = 0;
 		(*n_bad_events)++;
 		return -1;
 	}
 	(*p)++;
-	while(p** != 0x100cca1e) {
-		tdc_ch=p**;
+	while((*(*p)) != 0x100cca1e) {
+		tdc_ch=(*(*p));
 		(*p)++;
-		x = int(p** & 0x00ffffff); // take only the 24-bit data word
+		x = int((*(*p)) & 0x00ffffff); // take only the 24-bit data word
 		if (x & 0x0080000) x -= 0x00ffffff; // test for neg value
 			// if neg then you need to shift because the leading 1 in 24-bit
 			// is not leading in 32-bit; the shift is by "-0x00ffffff"
@@ -3156,7 +3156,7 @@ int ReadScalers(int **p, int n_trig, int n_run,int *all_trigs,int *s_liveTime_us
 		(*p)++; // p is at time since capture in ms
 		bdn.s_ms_since_capt = int((*(*p)) & 0xffffff);
 		(*p)++; // p is at trap state | 0 = trap full, 1 = trap empty
-		bdn.s_capt_state = int(p** & 0xffffff);
+		bdn.s_capt_state = int((*(*p)) & 0xffffff);
 		(*p)++; // move pointer to eject scaler
 		
 	// Eject Scaler ***********************
@@ -3167,18 +3167,18 @@ int ReadScalers(int **p, int n_trig, int n_run,int *all_trigs,int *s_liveTime_us
 			return -1;
 		}
 		(*p)++; //p is at time since eject in ms
-		bdn.s_ms_since_eject = int(**p & 0xffffff);
+		bdn.s_ms_since_eject = int((*(*p)) & 0xffffff);
 		(*p)++; //p is at # of capt since last eject
-		bdn.s_capt = int(**p & 0xffffff);
+		bdn.s_capt = int((*(*p)) & 0xffffff);
 		(*p)++; //p is at # of SiX4 hits since last eject
-		bdn.s_SiX4 = int(**p & 0xffffff);
+		bdn.s_SiX4 = int((*(*p)) & 0xffffff);
 
 	} // end old scaler readout
 
 	else {	// new scaler readout
 
 	// Live Time Scaler ***********************
-		if (**p != 0x100cca1e) {
+		if ((*(*p)) != 0x100cca1e) {
 			cout << "trig #" << n_trig << ", Livetime Scaler marker not found where expected!" << endl;
 			event_good = 0;
 			n_bad_events++;
@@ -3196,7 +3196,7 @@ int ReadScalers(int **p, int n_trig, int n_run,int *all_trigs,int *s_liveTime_us
 		
 		(*p)++; //this also iffy, check if it works?
 	// Capt Scaler ************************
-		if (**p != 0x100dca1e) {
+		if ((*(*p)) != 0x100dca1e) {
 			cout << "trig #" << n_trig << ", Capt Scaler marker not found where expected!" << endl;
 			event_good = 0;
 			n_bad_events++;
@@ -3209,7 +3209,7 @@ int ReadScalers(int **p, int n_trig, int n_run,int *all_trigs,int *s_liveTime_us
 		(*p)++; // move pointer to eject scaler
 		
 	// Eject Scaler ***********************
-		if (**p != 0x100eca1e) {
+		if ((*(*p)) != 0x100eca1e) {
 			cout << "trig #" << n_trig << ", Eject Scaler marker not found where expected!" << endl;
 			event_good = 0;
 			n_bad_events++;
