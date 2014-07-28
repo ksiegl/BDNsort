@@ -899,7 +899,7 @@ int main(int argc, char *argv[]) {
 				} // while
 				*/
 			// TDC2 *******************************				
-				if(0!=ReadTDC2(&p,n_trig,&event_good,&n_bad_events)) break;
+				//if(0!=ReadTDC2(&p,n_trig,&event_good,&n_bad_events)) break;
 				/*
 				if (*p != 0x2dc22dc2) {
 					cout << "trig #" << n_trig << ", TDC2 marker not found where expected!" << endl;
